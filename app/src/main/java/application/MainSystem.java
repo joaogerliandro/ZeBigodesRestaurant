@@ -3,12 +3,15 @@
  */
 package application;
 
-public class MainSystem {
-    public String getGreeting() {
+public class MainSystem 
+{
+    public String getGreeting() 
+    {
         return "Hello World!";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         System.out.println(new MainSystem().getGreeting());
     }
 }
