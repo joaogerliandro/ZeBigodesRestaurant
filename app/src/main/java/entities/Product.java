@@ -57,6 +57,7 @@ public class Product implements IID
 		amount = p_amount;
 	}*/
 
+	@Override
 	public int getID()
 	{
 		//To implement
