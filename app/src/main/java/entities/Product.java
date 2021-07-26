@@ -17,21 +17,34 @@ public class Product implements IID
 		name = p_name;
 		price = p_price;
 	}
+	
+	/*public Product(int p_product_id, String p_name, double p_price, int p_amount) 
+	{
+		super();
+		product_id = p_product_id;
+		name = p_name;
+		price = p_price;
+		amount = p_amount;
+	}*/
 
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String p_name) 
+	{
+		name = p_name;
 	}
 
-	public double getPrice() {
+	public double getPrice() 
+	{
 		return price;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setPrice(double p_price) 
+	{
+		price = p_price;
 	}
 	
 	/*public int getAmount() 
@@ -39,9 +52,9 @@ public class Product implements IID
 		return amount;
 	}
 
-	public void setAmount(int amount) 
+	public void setAmount(int p_amount) 
 	{
-		this.amount = amount;
+		amount = p_amount;
 	}*/
 
 	public int getID()
