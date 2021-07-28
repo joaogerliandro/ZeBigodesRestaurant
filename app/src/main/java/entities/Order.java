@@ -9,27 +9,18 @@ import interfaces.IID;
 public class Order implements IID 
 {
 	private int order_id;
-	private LocalDateTime order_time = LocalDateTime.now(); //Catch the instant the object is instantiated
+	private LocalDateTime order_time; 
 	private OrderStatus status = OrderStatus.PENDING_REQUEST;
 	private List<Product> products;
 	private Client client;
 	
-	//p_attribute => parameter_attribute
-	public Order(int p_order_id, Client p_client) //Add products during order creation
+	public Order(int p_order_id, Client p_client, List<Product> product_list)
 	{
 		super();
-		order_id = p_order_id;
-		client = p_client;
-		
-		//TODO Add products to List<Product>
-	}
-	
-	public Order(int p_order_id, Client p_client, List<Product> product_list) //Receive a ready-made product list
-	{
-		super();
-		order_id = p_order_id;
-		client = p_client;
-		products = product_list;
+		order_id   = p_order_id;
+		client     = p_client;
+		products   = product_list;
+		order_time = LocalDateTime.now();
 	}
 
 	public LocalDateTime getOrder_time() 
@@ -67,8 +58,7 @@ public class Order implements IID
 	{
 		return order_id;
 	}
-	
-	//TODO implement List<Product> methods
-	
+
+	//TODO implement List<Product> methods	
 	//TODO implement the method GetTotalPrice();
 }

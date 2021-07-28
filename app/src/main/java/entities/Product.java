@@ -7,25 +7,16 @@ public class Product implements IID
 	private int product_id;
 	private String name;
 	private double price;
-	//private int amount;	Avoid object repetition
+	private int amount;
 	
-	//p_attribute => parameter_attribute
-	public Product(int p_product_id, String p_name, double p_price) 
-	{
-		super();
-		product_id = p_product_id;
-		name = p_name;
-		price = p_price;
-	}
-	
-	/*public Product(int p_product_id, String p_name, double p_price, int p_amount) 
+	public Product(int p_product_id, String p_name, double p_price, int p_amount) 
 	{
 		super();
 		product_id = p_product_id;
 		name = p_name;
 		price = p_price;
 		amount = p_amount;
-	}*/
+	}
 
 	public String getName() 
 	{
@@ -47,7 +38,7 @@ public class Product implements IID
 		price = p_price;
 	}
 	
-	/*public int getAmount() 
+	public int getAmount() 
 	{
 		return amount;
 	}
@@ -55,7 +46,7 @@ public class Product implements IID
 	public void setAmount(int p_amount) 
 	{
 		amount = p_amount;
-	}*/
+	}
 
 	@Override
 	public int getID()
