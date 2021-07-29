@@ -109,37 +109,48 @@ public class Order implements IID
 			"\t\t[EDIT PRODUCT LIST]\n",
 			"1 - Add Product\n",
 			"2 - Remove Product\n",
-			"3 - Edit Product Amount\n",
+			"3 - Clear Product List\n",
+			"4 - Edit Product Amount\n",
 			"\n\nChoice: "
 		);
 
 		switch(Integer.parseInt(input_scanner.nextLine()))
 		{
 			case 1:
-				/*Implement add product
+				/*
 				  - List<Product> menu = DBloadProductList();
 				  
 				  - ShowProductList(menu)
-				  - Choose an product 
+				  - Choose an product by ID
 				  - int new_product_id = Integer.parseInt(input_scanner.nextLine());
-				  - int menu_index = GetProductIndex(menu, new_product_id);
-				  - if(menu_index != -1)
+				  - int product_index = GetProductIndex(products, new_product_id);
+				  
+				  	if(product_index == -1)
 				  	{
-				  		int new_product_id = menu.get(menu_index).GetID();
-				  		String new_product_name = menu.get(menu_index).GetName();
-				  		double new_product_price = menu.get(menu_index).GetPrice();
-				  		
-				  		Product new_product = new Product(new_product_id,
-				  		new_product_name, new_product_price, 1);
-				  		
-				  		- receive product amount
-				  		new_product.SetAmount(Integer.parseInt(input_scanner.nextLine()));
-				  		
-				  		products.add(new_product);
-				  	}else
-				  	{
-				  		Product not found !
-				  	}
+					  - int menu_index = GetProductIndex(menu, new_product_id);
+					  - if(menu_index != -1)
+					  	{
+					  		int new_product_id = menu.get(menu_index).GetID();
+					  		String new_product_name = menu.get(menu_index).GetName();
+					  		double new_product_price = menu.get(menu_index).GetPrice();
+					  		
+					  		Product new_product = new Product(new_product_id,
+					  		new_product_name, new_product_price, 1);
+					  		
+					  		- receive product amount
+					  		new_product.SetAmount(Integer.parseInt(input_scanner.nextLine()));
+					  		
+					  		products.add(new_product);
+					  	}else
+					  	{
+					  		Product not found !
+					  	}
+					 }else
+					 {
+					 	//Product already exists, you can only improve it
+					 	//Receive the new amount
+					 	products.get(product_index).SetAmount;
+					 }
 				  
 				*/
 				
@@ -161,7 +172,10 @@ public class Order implements IID
 					System.out.printf("\nProduct not found !");
 				}
 				break;
-			case 3:
+			case 3:	
+				products.clear();
+				break;
+			case 4:
 				System.out.printf("\nEnter the product id: ");
 				product_id = Integer.parseInt(input_scanner.nextLine());
 
@@ -184,6 +198,9 @@ public class Order implements IID
 				{
 					System.out.printf("\nProduct not found !");
 				}	
+				break;
+			default:
+				System.out.printf("Invalid Operation, Nothing has altered");
 		}
 
 		input_scanner.close();

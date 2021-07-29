@@ -50,13 +50,47 @@ public class OrderSystem
         client = new Client(client_name, table_number);
         
         /*
-            TODO (All): Make the loop of the added products
-
-            options loop
-                -ShowMenu(source_list);
-                -AddProduct(order_list);
-                    -Product and Amount
-        */
+		  int choice = 1;
+		  while(choice == 1)
+		  {
+		  - List<Product> menu = DBloadProductList();
+		  
+		  - ShowMenu(menu);
+		  - Choose an product by ID
+		  - int new_product_id = Integer.parseInt(input_scanner.nextLine());
+		  - int product_index = GetProductIndex(products, new_product_id);
+		  
+		  	if(product_index == -1)
+		  	{
+			  - int menu_index = GetProductIndex(menu, new_product_id);
+			  - if(menu_index != -1)
+			  	{
+			  		int new_product_id = menu.get(menu_index).GetID();
+			  		String new_product_name = menu.get(menu_index).GetName();
+			  		double new_product_price = menu.get(menu_index).GetPrice();
+			  		
+			  		Product new_product = new Product(new_product_id,
+			  		new_product_name, new_product_price, 1);
+			  		
+			  		- receive product amount
+			  		new_product.SetAmount(Integer.parseInt(input_scanner.nextLine()));
+			  		
+			  		products.add(new_product);
+			  	}else
+			  	{
+			  		Product not found !
+			  	}
+			 }else
+			 {
+			 	//Product already exists, you can only improve it
+			 	//Receive the new amount
+			 	products.get(product_index).SetAmount;
+			 }
+		  
+		  	- Want to add other product ? 1 - Yes || Other value - No
+		  	choice = Integer.parseInt(input_scanner.nextLine());
+		  	
+		*/
         
         input_scanner.close();
     }
