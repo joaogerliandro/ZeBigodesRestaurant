@@ -54,5 +54,17 @@ public class Product implements IID
 		//To implement
 		return product_id;
 	}
+
+	public void ShowProperties()
+	{
+		System.out.printf("\nProduct ID: "
+		+ product_id
+		+ "\nProduct Name: "
+		+ name
+		+ "\nAmount: "
+		+ amount
+		+ "Price: "
+		+ (amount * price));
+	}
 	
 }

@@ -11,27 +11,37 @@ public class OrderSystem
 {   
     private static int countID = 0;
     
-    // Testa esse metodo joao e corrige o que estiver errado
     public int GetOrderIndex(List<Order> order_list, int order_id)
     {   
-        for(int count = 0; count < order_list.size(); ++count)
+        for(int count = 0; count < order_list.size(); count++)
             if(order_id == order_list.get(count).getID())
                 return count;
 
-        // Deixei como -1 para casa o ID não seja encontrado
         return -1; 
     }
+
+    // Menu is the list of available products
+    public void ShowMenu(List<Product> menu)
+	{
+		//TODO (Gerliandro): Raising connection as a database
+        
+        System.out.printf("\n\t\t[MENU]");
+        for(int count = 0; count < menu.size(); count++)
+		{
+			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
+			menu.get(count).ShowProperties();
+		}
+	}
     
-    public void OrderAdd(List<Order> order_list)
+    public void AddOrder(List<Order> order_list, List<Product> source_list) //temporary source_list
     {
         Scanner input_scanner = new Scanner(System.in);
         
-        List<Product> products;
         Client client;
-        String NameClient;
-        int NumTable, OrderId = countID++;
+        String client_name;
+        int table_number , order_id = countID++;
 
-        System.out.println("Enter the customer name:");
+        System.out.println("Enter the customer name: ");
         NameClient = input_scanner.nextLine();        
         
         System.out.print("Enter the table number: ");
@@ -40,59 +50,30 @@ public class OrderSystem
         client = new Client(NameClient, NumTable);
         
         /*
-            TODO (Gerliandro): Make the loop of the added products
-            Note: Make A for Database
+            TODO (All): Make the loop of the added products
+
+            options loop
+                -ShowMenu(source_list);
+                -AddProduct(order_list);
+                    -Product and Amount
         */
-        
-        // Não sei como fazer esse metodo
-        // Acho que precisa de coisas do banco
-        // Então joão... faz ou espera até amanhã pra fazer com a gente
         
         input_scanner.close();
     }
 
-    public void OrderShowList(List<Order> order_list)
+    public void ShowOrderList(List<Order> order_list)
     {
-        for(int count = 0; count < order_list.size(); ++count)
+        for(int count = 0; count < order_list.size(); count++)
         {
-            // mostrar
-            /* 
-                - [ID do pedido     ] x
-                - [time do pedido   ] x
-                - [nome do cliente  ] x
-                - [numero da mesa   ] x
-                - [status do pedido ] x
-                - [lista de produtos] X
-                    * nome  do produto
-                    * preco do prduto
-                    * quantidade
-            */
 
-            // Tira esse vário prints
-            // Testa se ta pegando os valores certos
+            System.out.printf("\n\t[Order #%d]", (count + 1));
+            order_list.get(count).ShowProperties();
 
-            System.out.printf("Nome do cliente:  %s \n", order_list.get(count).getClient().getName());
-            System.out.printf("ID: %d", order_list.get(count).getID());
-            System.out.printf("Hora do pedido:   %s \n", /* pra fazer */);
-            System.out.printf("Número da mesa:   %d \n", order_list.get(count).getTableNumber());
-            System.out.printf("Status do pedido: " + order_list.get(count).getStatus().name() + "\n");
-
-
-            // A gente pode fazer uma metodo em Order para "mostrar a lista de produtos", joão
-            for(Product prod : order_list.get(count).getProducts())
-            {
-                System.out.printf
-                (
-                    "Product: %s\nPreco: %f\nQuant: %d",
-                    prod.getName(),
-                    prod.getPrice(), 
-                    prod.getAmount()
-                );
-            }
+            order_list.get(count).ShowProductList();
         }
     }
 
-    public void OrderRemove(List<Order> order_list)
+    public void RemoveOrder(List<Order> order_list)
     {
         Scanner input_scanner = new Scanner(System.in);
         int order_id;
@@ -107,57 +88,71 @@ public class OrderSystem
         order_list.remove(GetOrderIndex(order_list, order_id));
     }
     
-    public void OrderClear(List<Order> order_list)
+    public void ClearOrderList(List<Order> order_list)
     {
         order_list.clear();
     }
 
-    public void OrderEdit(List<Order> order_list)
+    public void EditOrder(List<Order> order_list)
     {
         Scanner input_scanner = new Scanner(System.in);
-        int order_id, index_order, choice;
+        int order_id;
         
-        // Receive order id
-        System.out.println("Enter the ID of the order you want to edit:");
+        System.out.printf("\nEnter order id: ");
         order_id = Integer.parseInt(input_scanner.nextLine());
-        
-        index_order = GetOrderIndex(order_list, order_id);
 
-        System.out.printf
-        (
-            "\t\t[EDITAR]\n"
-            "1 - Editar nome do cliente\n"
-            "2 - Editar numero da mesa\n"
-            "3 - Editar status do pedido\n"
-            "4 - Editar propriedades do produto\n\n"
-            "Digite: "
-        );
+        if(order_list.get(GetOrderIndex(order_list,
+           order_id)).getStatus() != OrderStatus.AWAITING_PAYMENT)
+        {
+            System.out.printf
+            (
+                "\t\t[EDIT ORDER]\n",
+                "1 - Edit customer name\n",
+                "2 - Edit table number\n",
+                "3 - Edit order status\n",
+                "4 - Editar propriedades do produto\n\n",
+                "Choice: "
+            );
 
-        choice = Integer.parseInt(input_scanner.nextLine());
-
-        switch (choice) {
-            case 1:
-                // usar a entrada do usuario para modificar o nome do cliente
-                // do pedido medido pelo index
-                break;
-            case 2:
-                // usar a entrada do usuario para modificar o numero da mesa
-                // do pedido medido pelo index
-                break;
-            case 3:
-                // usar a entrada do usuario para modificar o status
-                // do pedido medido pelo index
-                break;
-            case 4:
-                // usar a entrada do usuario para modificar as propriedades do produto
-                // do pedido medido pelo index
-                break;
-            default:
-                break;
+            switch (Integer.parseInt(input_scanner.nextLine())) 
+            {
+                case 1:
+                    order_list.get(GetOrderIndex(order_list,
+                    order_id)).getClient().EditName();
+                    break;
+                case 2:
+                    order_list.get(GetOrderIndex(order_list,
+                    order_id)).getClient().EditTableN();;
+                    break;
+                case 3:
+                    order_list.get(GetOrderIndex(order_list,
+                    order_id)).EditStatus();
+                    break;
+                case 4:
+                    order_list.get(GetOrderIndex(order_list,
+                    order_id)).EditProductList();
+                    break;
+                default:
+                    break;
+            }
+        }else
+        {
+            System.out.printf("\nOrder can't be edited anymore !");
         }
 
-        // Receive the choice of attribute to be edited
-        
-        // Calls the respective attribute editing method
+        input_scanner.close();
+    }
+
+    public Order FindOrder(List<Order> order_list, int order_id)
+    {
+        // Returns the order sought by id
+        int order_found = GetOrderIndex(order_list, order_id);
+        if(order_found != -1)
+        {
+            return order_list.get(order_found);
+        }else
+        {
+            throw new Exception("Order not found");
+        }
     }
 }

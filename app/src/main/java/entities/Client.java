@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Scanner;
+
 import interfaces.IID;
 
 public class Client implements IID
@@ -37,9 +39,39 @@ public class Client implements IID
 		table_number = p_table_number;
 	}
 	
+	public void EditName()
+	{
+		Scanner input_scanner = new Scanner(System.in);
+
+		System.out.printf("\t\t[EDIT CLIENT NAME]",
+		"\nEnter the new name: ");
+		name = input_scanner.nextLine();
+		input_scanner.close();
+	}
+
+	public void EditTableN()
+	{
+		Scanner input_scanner = new Scanner(System.in);
+
+		System.out.printf("\t\t[EDIT TABLE NUMBER]",
+		"\nEnter the new table number: ");
+		name = Integer.parseInt(input_scanner.nextLine());
+		input_scanner.close();
+	}
+
 	@Override
 	public int getID()
 	{
 		return client_id;
+	}
+
+	public void ShowProperties()
+	{
+		System.out.printf("\nClient ID: "
+		+ client_id
+		+ "\nClient Name: "
+		+ name
+		+ "\nTable Number: "
+		+ table_number);
 	}
 }
