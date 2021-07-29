@@ -110,7 +110,7 @@ public class OrderSystem
                 "1 - Edit customer name\n",
                 "2 - Edit table number\n",
                 "3 - Edit order status\n",
-                "4 - Editar propriedades do produto\n\n",
+                "4 - Edit product list\n\n",
                 "Choice: "
             );
 

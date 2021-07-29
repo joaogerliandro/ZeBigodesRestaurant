@@ -67,7 +67,7 @@ public class Order implements IID
 		"\n1 - PENDING ORDER",
 		"\n2 - IN PREPARATION",
 		"\n3 - AWAITING PAYMENT",
-		"Choice: ");
+		"\n\nChoice: ");
 
 		switch(Integer.parseInt(input_scanner.nextLine()))
 		{
@@ -87,7 +87,75 @@ public class Order implements IID
 
 	public void EditProductList()
 	{
-		//Implement the edit list logic
+		Scanner input_scanner = new Scanner(System.in);
+        int product_id;
+        
+		//Show all product id in list
+		System.out.printf("\n\t\t[PRODUCT LIST]");
+		for(int count = 0; count < products.size(); count++)
+		{
+			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
+			System.out.printf("Name: "
+			+ products.get(count).getName()
+			+ "ID: "
+			+ products.get(count).getID()
+			+ "Amount: "
+			+ products.get(count).getAmount());
+		}
+
+		System.out.printf
+		(
+			"\t\t[EDIT PRODUCT LIST]\n",
+			"1 - Add Product\n",
+			"2 - Remove Product\n",
+			"3 - Edit Product Amount\n",
+			"\n\nChoice: "
+		);
+
+		switch(Integer.parseInt(input_scanner.nextLine()))
+		{
+			case 1:
+				//Implement add product
+				break;
+			case 2:
+				System.out.printf("\nEnter product id: ");
+				product_id = Integer.parseInt(input_scanner.nextLine());
+	
+				product_index = GetProductIndex(products, product_id);
+				if(product_index != -1)
+				{
+					products.remove(product_index);
+				}else
+				{
+					System.out.printf("\nProduct not found !");
+				}
+				break;
+			case 3:
+				System.out.printf("\nEnter the product id: ");
+				product_id = Integer.parseInt(input_scanner.nextLine());
+
+				product_index = GetProductIndex(products, product_id);
+
+				if(product_index != -1)
+				{
+					System.out.printf("\nEnter the new amount: ");
+					
+					int new_amount = Integer.parseInt(input_scanner.nextLine());
+					if(new_amount > 0)
+					{
+						products.get(product_index).setAmount(new_amount);
+					}else
+					{
+						products.remove(product_index);
+					}
+				}
+				else
+				{
+					System.out.printf("\nProduct not found !");
+				}	
+		}
+
+		input_scanner.close();
 	}
 
 	public void ShowProductList()
@@ -110,6 +178,15 @@ public class Order implements IID
 		System.out.printf("\n\t[CLIENT]");
 		client.ShowProperties();
 	}
+
+	public int GetProductIndex(List<Product> product_list, int product_id)
+    {   
+        for(int count = 0; count < product_list.size(); count++)
+            if(product_id == product_list.get(count).getID())
+                return count;
+
+        return -1; 
+    }
 
 	//TODO implement List<Product> methods	
 	//TODO implement the method GetTotalPrice();

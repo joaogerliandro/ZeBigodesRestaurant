@@ -51,7 +51,6 @@ public class Product implements IID
 	@Override
 	public int getID()
 	{
-		//To implement
 		return product_id;
 	}
 
