@@ -116,7 +116,37 @@ public class Order implements IID
 		switch(Integer.parseInt(input_scanner.nextLine()))
 		{
 			case 1:
-				//Implement add product
+				/*Implement add product
+				  - List<Product> menu = DBloadProductList();
+				  
+				  - ShowProductList(menu)
+				  - Choose an product 
+				  - int new_product_id = Integer.parseInt(input_scanner.nextLine());
+				  - int menu_index = GetProductIndex(menu, new_product_id);
+				  - if(menu_index != -1)
+				  	{
+				  		int new_product_id = menu.get(menu_index).GetID();
+				  		String new_product_name = menu.get(menu_index).GetName();
+				  		double new_product_price = menu.get(menu_index).GetPrice();
+				  		
+				  		Product new_product = new Product(new_product_id,
+				  		new_product_name, new_product_price, 1);
+				  		
+				  		- receive product amount
+				  		new_product.SetAmount(Integer.parseInt(input_scanner.nextLine()));
+				  		
+				  		products.add(new_product);
+				  	}else
+				  	{
+				  		Product not found !
+				  	}
+				  
+				*/
+				
+				int new_product_id = 1, product_amount = 2;
+				Product new_product = new Product(new_product_id, "arroz", 8.0 , product_amount);
+				
+				products.add(new_product);
 				break;
 			case 2:
 				System.out.printf("\nEnter product id: ");
@@ -165,6 +195,15 @@ public class Order implements IID
 		{
 			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
 			products.get(count).ShowProperties();
+		}
+	}
+	
+	public void ShowProductList(List<Product> source_list)
+	{
+		for(int count = 0; count < source_list.size(); count++)
+		{
+			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
+			source_list.get(count).ShowProperties();
 		}
 	}
 
