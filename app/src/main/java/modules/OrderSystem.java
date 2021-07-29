@@ -14,7 +14,7 @@ public class OrderSystem
     public int GetOrderIndex(List<Order> order_list, int order_id)
     {   
         for(int count = 0; count < order_list.size(); count++)
-            if(order_id == order_list.get(count).getID())
+            if(order_id == order_list.get(count).GetID())
                 return count;
 
         return -1; 
@@ -76,16 +76,19 @@ public class OrderSystem
     public void RemoveOrder(List<Order> order_list)
     {
         Scanner input_scanner = new Scanner(System.in);
-        int order_id;
+        int order_id, order_index;
         
-        // Receive order id
         order_id = input_scanner.nextInt();
         input_scanner.close();
 
-        /* Searches the order id from the list and returns the order's index,
-           then deletes the order from the list.
-        */
-        order_list.remove(GetOrderIndex(order_list, order_id));
+        order_index = GetOrderIndex(order_list, order_id);
+        if(order_index != -1)
+        {
+        	order_list.remove(order_index);
+        }else
+        {
+        	System.out.printf("Order not found\r\n");
+        }
     }
     
     public void ClearOrderList(List<Order> order_list)
@@ -96,48 +99,55 @@ public class OrderSystem
     public void EditOrder(List<Order> order_list)
     {
         Scanner input_scanner = new Scanner(System.in);
-        int order_id;
+        int order_id, order_index;
         
         System.out.printf("\nEnter order id: ");
         order_id = Integer.parseInt(input_scanner.nextLine());
-
-        if(order_list.get(GetOrderIndex(order_list,
-           order_id)).getStatus() != OrderStatus.AWAITING_PAYMENT)
+        
+        order_index = GetOrderIndex(order_list, order_id);
+        
+        if(order_index != -1) 
         {
-            System.out.printf
-            (
-                "\t\t[EDIT ORDER]\n",
-                "1 - Edit customer name\n",
-                "2 - Edit table number\n",
-                "3 - Edit order status\n",
-                "4 - Edit product list\n\n",
-                "Choice: "
-            );
-
-            switch (Integer.parseInt(input_scanner.nextLine())) 
-            {
-                case 1:
-                    order_list.get(GetOrderIndex(order_list,
-                    order_id)).getClient().EditName();
-                    break;
-                case 2:
-                    order_list.get(GetOrderIndex(order_list,
-                    order_id)).getClient().EditTableN();;
-                    break;
-                case 3:
-                    order_list.get(GetOrderIndex(order_list,
-                    order_id)).EditStatus();
-                    break;
-                case 4:
-                    order_list.get(GetOrderIndex(order_list,
-                    order_id)).EditProductList();
-                    break;
-                default:
-                    break;
-            }
+	        if(order_list.get(order_index).GetStatus() != OrderStatus.AWAITING_PAYMENT)
+	        {
+	            System.out.printf
+	            (
+	                "\t\t[EDIT ORDER]\n",
+	                "1 - Edit customer name\n",
+	                "2 - Edit table number\n",
+	                "3 - Edit order status\n",
+	                "4 - Edit product list\n\n",
+	                "Choice: "
+	            );
+	
+	            switch (Integer.parseInt(input_scanner.nextLine())) 
+	            {
+	                case 1:
+	                    order_list.get(GetOrderIndex(order_list,
+	                    order_id)).GetClient().EditName();
+	                    break;
+	                case 2:
+	                    order_list.get(GetOrderIndex(order_list,
+	                    order_id)).GetClient().EditTableN();;
+	                    break;
+	                case 3:
+	                    order_list.get(GetOrderIndex(order_list,
+	                    order_id)).EditStatus();
+	                    break;
+	                case 4:
+	                    order_list.get(GetOrderIndex(order_list,
+	                    order_id)).EditProductList();
+	                    break;
+	                default:
+	                    break;
+	            }
+	        }else
+	        {
+	            System.out.printf("\nOrder can't be edited anymore !");
+	        }
         }else
         {
-            System.out.printf("\nOrder can't be edited anymore !");
+        	System.out.printf("Order not found\r\n");
         }
 
         input_scanner.close();

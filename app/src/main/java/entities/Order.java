@@ -24,38 +24,38 @@ public class Order implements IID
 		order_time = LocalDateTime.now();
 	}
 
-	public LocalDateTime getOrder_time() 
+	public LocalDateTime GetOrder_time() 
 	{
 		return order_time;
 	}
 
-	public OrderStatus getStatus() 
+	public OrderStatus GetStatus() 
 	{
 		return status;
 	}
 
-	public void setStatus(OrderStatus p_status)
+	public void SetStatus(OrderStatus p_status)
 	{
 		status = p_status;
 	}
 
-	public List<Product> getProducts() 
+	public List<Product> GetProducts() 
 	{
 		return products;
 	}
 
-	public Client getClient() 
+	public Client GetClient() 
 	{
 		return client;
 	}
 
-	public void setClient(Client p_client) 
+	public void SetClient(Client p_client) 
 	{
 		client = p_client;
 	}
 	
 	@Override
-	public int getID() 
+	public int GetID() 
 	{
 		return order_id;
 	}
@@ -97,11 +97,11 @@ public class Order implements IID
 		{
 			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
 			System.out.printf("Name: "
-			+ products.get(count).getName()
+			+ products.get(count).GetName()
 			+ "ID: "
-			+ products.get(count).getID()
+			+ products.get(count).GetID()
 			+ "Amount: "
-			+ products.get(count).getAmount());
+			+ products.get(count).GetAmount());
 		}
 
 		System.out.printf
@@ -144,7 +144,7 @@ public class Order implements IID
 					int new_amount = Integer.parseInt(input_scanner.nextLine());
 					if(new_amount > 0)
 					{
-						products.get(product_index).setAmount(new_amount);
+						products.get(product_index).SetAmount(new_amount);
 					}else
 					{
 						products.remove(product_index);
@@ -183,7 +183,7 @@ public class Order implements IID
 	public int GetProductIndex(List<Product> product_list, int product_id)
     {   
         for(int count = 0; count < product_list.size(); count++)
-            if(product_id == product_list.get(count).getID())
+            if(product_id == product_list.get(count).GetID())
                 return count;
 
         return -1; 

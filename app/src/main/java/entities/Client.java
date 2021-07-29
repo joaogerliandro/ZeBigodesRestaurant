@@ -19,22 +19,22 @@ public class Client implements IID
 		table_number = p_table_number;
 	}
 
-	public String getName() 
+	public String GetName() 
 	{
 		return name;
 	}
 
-	public void setName(String p_name) 
+	public void SetName(String p_name) 
 	{
 		name = p_name;
 	}
 
-	public int getTable_number() 
+	public int GetTable_number() 
 	{
 		return table_number;
 	}
 
-	public void setTable_number(int p_table_number) 
+	public void SetTable_number(int p_table_number) 
 	{
 		table_number = p_table_number;
 	}
@@ -60,7 +60,7 @@ public class Client implements IID
 	}
 
 	@Override
-	public int getID()
+	public int GetID()
 	{
 		return client_id;
 	}

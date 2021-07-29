@@ -18,38 +18,38 @@ public class Product implements IID
 		amount = p_amount;
 	}
 
-	public String getName() 
+	public String GetName() 
 	{
 		return name;
 	}
 
-	public void setName(String p_name) 
+	public void SetName(String p_name) 
 	{
 		name = p_name;
 	}
 
-	public double getPrice() 
+	public double GetPrice() 
 	{
 		return price;
 	}
 
-	public void setPrice(double p_price) 
+	public void SetPrice(double p_price) 
 	{
 		price = p_price;
 	}
 	
-	public int getAmount() 
+	public int GetAmount() 
 	{
 		return amount;
 	}
 
-	public void setAmount(int p_amount) 
+	public void SetAmount(int p_amount) 
 	{
 		amount = p_amount;
 	}
 
 	@Override
-	public int getID()
+	public int GetID()
 	{
 		return product_id;
 	}
