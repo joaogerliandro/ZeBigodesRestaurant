@@ -55,7 +55,7 @@ public class Client implements IID
 
 		System.out.printf("\t\t[EDIT TABLE NUMBER]",
 		"\nEnter the new table number: ");
-		name = Integer.parseInt(input_scanner.nextLine());
+		table_number = Integer.parseInt(input_scanner.nextLine());
 		input_scanner.close();
 	}
 

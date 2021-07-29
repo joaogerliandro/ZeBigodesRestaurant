@@ -2,6 +2,7 @@ package entities;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Scanner;
 
 import enumerations.OrderStatus;
 import interfaces.IID;
@@ -10,7 +11,7 @@ public class Order implements IID
 {
 	private int order_id;
 	private LocalDateTime order_time; 
-	private OrderStatus status = OrderStatus.PENDING_REQUEST;
+	private OrderStatus status = OrderStatus.PENDING_ORDER;
 	private List<Product> products;
 	private Client client;
 	
@@ -88,7 +89,7 @@ public class Order implements IID
 	public void EditProductList()
 	{
 		Scanner input_scanner = new Scanner(System.in);
-        int product_id;
+        int product_id, product_index;
         
 		//Show all product id in list
 		System.out.printf("\n\t\t[PRODUCT LIST]");
