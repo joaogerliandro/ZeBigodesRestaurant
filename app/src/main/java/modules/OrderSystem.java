@@ -42,12 +42,12 @@ public class OrderSystem
         int table_number , order_id = countID++;
 
         System.out.println("Enter the customer name: ");
-        NameClient = input_scanner.nextLine();        
+        client_name = input_scanner.nextLine();        
         
         System.out.print("Enter the table number: ");
-        NumTable = Integer.parseInt(input_scanner.nextLine());
+        table_number = Integer.parseInt(input_scanner.nextLine());
 
-        client = new Client(NameClient, NumTable);
+        client = new Client(client_name, table_number);
         
         /*
             TODO (All): Make the loop of the added products
@@ -152,7 +152,7 @@ public class OrderSystem
             return order_list.get(order_found);
         }else
         {
-            throw new Exception("Order not found");
+            return null; //Temporary
         }
     }
 }
