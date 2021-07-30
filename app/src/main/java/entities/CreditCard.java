@@ -2,6 +2,8 @@ package entities;
 
 public class CreditCard extends Card
 {
+	public CreditCard() {}
+
 	public CreditCard(String titular,
 					  String ver_code,
 					  String card_number,
@@ -15,10 +17,10 @@ public class CreditCard extends Card
 	public String toString()
 	{
 		return  "[CreditCard]" + "\n" + 
-				"[+] Titular: " + GetTitularName() +
-				"[+] Ver. Code: " + GetVerificationCode() +
-				"[+] Number: " + GetCardNumber() +
-				"[+] CPF: " + GetCPF() +
+				"[+] Titular: " + GetTitularName() + "\n" + 
+				"[+] Ver. Code: " + GetVerificationCode() + "\n" + 
+				"[+] Number: " + GetCardNumber() + "\n" + 
+				"[+] CPF: " + GetCPF() + "\n" + 
 				"[+] Expr. Date: " + GetExpirationDate();
 	}
 }

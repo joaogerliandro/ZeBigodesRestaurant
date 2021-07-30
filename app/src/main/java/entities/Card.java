@@ -8,6 +8,8 @@ public abstract class Card
 	private String m_card_number;
     private String m_cpf;
 	private String m_expiration_date;
+
+	public Card(){}
 	
 	public Card(String titular,
 				String ver_code,

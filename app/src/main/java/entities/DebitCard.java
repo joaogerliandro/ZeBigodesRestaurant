@@ -2,6 +2,8 @@ package entities;
 
 public class DebitCard extends Card
 {
+	public DebitCard() {}
+
 	public DebitCard(String titular,
 					 String ver_code,
 					 String card_number,
@@ -14,6 +16,11 @@ public class DebitCard extends Card
 	@Override
 	public String toString()
 	{
-		return "";
+		return  "[DebitCard]" + "\n" + 
+				"[+] Titular: " + GetTitularName() + "\n" + 
+				"[+] Ver. Code: " + GetVerificationCode() + "\n" + 
+				"[+] Number: " + GetCardNumber() + "\n" + 
+				"[+] CPF: " + GetCPF() + "\n" + 
+				"[+] Expr. Date: " + GetExpirationDate();
 	}
 }
