@@ -64,6 +64,12 @@ public class Client implements IID
 	{
 		return client_id;
 	}
+	
+	@Override
+	public void SetID(int p_client_id)
+	{
+		client_id = p_client_id;
+	}
 
 	public void ShowProperties()
 	{

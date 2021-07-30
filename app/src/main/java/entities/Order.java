@@ -59,6 +59,12 @@ public class Order implements IID
 	{
 		return order_id;
 	}
+	
+	@Override
+	public void SetID(int p_order_id) 
+	{
+		order_id = p_order_id;
+	}
 
 	public void EditStatus()
 	{

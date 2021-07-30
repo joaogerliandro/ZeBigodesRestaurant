@@ -33,10 +33,10 @@ public class ConnectionFactory {
 	
 	private static Properties LoadProperties() 
 	{
-		try(FileInputStream fs = new FileInputStream("db.properties"))
+		try(FileInputStream load_file = new FileInputStream("database.properties"))
 		{
 			Properties properties = new Properties();
-			properties.load(fs);
+			properties.load(load_file);
 			return properties;
 		}
 		catch (IOException e) 
