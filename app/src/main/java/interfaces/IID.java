@@ -2,5 +2,7 @@ package interfaces;
 
 public interface IID 
 {
-	public int getID(); 
+	public int GetID(); 
+	
+	public void SetID(int id);
 }
