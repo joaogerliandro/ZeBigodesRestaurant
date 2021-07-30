@@ -9,6 +9,15 @@ public class Product implements IID
 	private double price;
 	private int amount;
 	
+	public Product(int p_product_id, String p_name, double p_price) 
+	{
+		super();
+		product_id = p_product_id;
+		name = p_name;
+		price = p_price;
+		amount = 1;
+	}
+	
 	public Product(int p_product_id, String p_name, double p_price, int p_amount) 
 	{
 		super();
@@ -52,6 +61,12 @@ public class Product implements IID
 	public int GetID()
 	{
 		return product_id;
+	}
+	
+	@Override
+	public void SetID(int p_product_id)
+	{
+		product_id = p_product_id;
 	}
 
 	public void ShowProperties()
