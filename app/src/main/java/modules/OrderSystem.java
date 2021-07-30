@@ -45,6 +45,7 @@ public class OrderSystem
         client_name = input_scanner.nextLine();        
         
         System.out.print("Enter the table number: ");
+		// T.E
         table_number = Integer.parseInt(input_scanner.nextLine());
 
         client = new Client(client_name, table_number);

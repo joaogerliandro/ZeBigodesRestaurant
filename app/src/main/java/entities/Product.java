@@ -11,20 +11,18 @@ public class Product implements IID
 	
 	public Product(int p_product_id, String p_name, double p_price) 
 	{
-		super();
 		product_id = p_product_id;
-		name = p_name;
-		price = p_price;
-		amount = 1;
+		name       = p_name;
+		price      = p_price;
+		amount     = 1;
 	}
 	
 	public Product(int p_product_id, String p_name, double p_price, int p_amount) 
 	{
-		super();
 		product_id = p_product_id;
-		name = p_name;
-		price = p_price;
-		amount = p_amount;
+		name       = p_name;
+		price      = p_price;
+		amount     = p_amount;
 	}
 
 	public String GetName() 
@@ -79,6 +77,5 @@ public class Product implements IID
 		+ amount
 		+ "Price: "
 		+ (amount * price));
-	}
-	
+	}	
 }

@@ -7,15 +7,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import exceptions.DatabaseException;
+import com.google.common.base.Optional;
 
-public class ConnectionFactory {
-	
+import exceptions.*;
+
+public class ConnectionFactory 
+{
 	private static Connection connection = null;
 	
-	public static Connection GetConnection() 
+	public static Connection GetConnection() throws DatabaseException
 	{
-		if(connection == null) 
+		if (connection == null) 
 		{
 			try
 			{
@@ -28,15 +30,17 @@ public class ConnectionFactory {
 				throw new DatabaseException(e.getMessage());
 			}
 		}
+
 		return connection;
 	}
 	
-	private static Properties LoadProperties() 
+	private static Properties LoadProperties() throws DatabaseException
 	{
-		try(FileInputStream load_file = new FileInputStream("database.properties"))
+		try (FileInputStream file_stream = new FileInputStream("database.properties"))
 		{
 			Properties properties = new Properties();
-			properties.load(load_file);
+			properties.load(file_stream);
+			file_stream.close();
 			return properties;
 		}
 		catch (IOException e) 
