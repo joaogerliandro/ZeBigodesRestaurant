@@ -1,9 +1,6 @@
 package entities;
 
 import java.util.Scanner;
-
-import javax.swing.text.Utilities;
-
 import interfaces.IID;
 
 public class Client implements IID
@@ -47,9 +44,18 @@ public class Client implements IID
 		System.out.printf("\t\t[EDIT CLIENT NAME]",
 						  "\nEnter the new name: ");
 
-		name = input_scanner.nextLine();
-		// lanca uma excecao caso name é vazio
-		input_scanner.close();
+		try
+		{
+			name = input_scanner.nextLine();
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}
+		finally
+		{
+			input_scanner.close();
+		}
 	}
 
 	public void EditTableNumber()
@@ -59,10 +65,18 @@ public class Client implements IID
 		System.out.printf("\t\t[EDIT TABLE NUMBER]",
 						  "\nEnter the new table number: ");
 
-		// exceção aq
-		table_number = Integer.parseInt(input_scanner.nextLine());
-		
-		input_scanner.close();
+		try
+		{
+			table_number = Integer.parseInt(input_scanner.nextLine());
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}
+		finally
+		{
+			input_scanner.close();
+		}
 	}
 
 	@Override

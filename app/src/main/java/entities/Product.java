@@ -9,9 +9,11 @@ public class Product implements IID
 	private double price;
 	private int amount;
 	
+	public Product(){}
+	
 	public Product(int p_product_id, String p_name, double p_price) 
 	{
-		product_id = p_product_id;
+		this.product_id = p_product_id;
 		name       = p_name;
 		price      = p_price;
 		amount     = 1;

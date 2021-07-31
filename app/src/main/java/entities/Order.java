@@ -1,10 +1,9 @@
 package entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import javax.management.RuntimeErrorException;
 
 import enumerations.OrderStatus;
 import interfaces.IID;
@@ -111,6 +110,8 @@ public class Order implements IID
 		}
 	}
 
+	// dica: EditProductList poderia ter como argumento uma lista carregada do banco
+	// pois seria mais fácil. Já que só precisaria atribuir na linha 157
 	public void EditProductList()
 	{
 		Scanner input_scanner = new Scanner(System.in);
@@ -140,12 +141,10 @@ public class Order implements IID
 			"\n> "
 		);
 
-		// muita coisa pra ajeitar
-		// ajeitem aqui, façam do msm jeito q fiz antes
-		// eh o msm problema
-		
 		int code;
 
+		// Coloquei esse try aqui, se for um problema tirem(GERLIANDO E FELIPE)
+		// Tem em outras funções também, preste atenção
 		try
 		{
 			code = Integer.parseInt(input_scanner.nextLine());
@@ -153,49 +152,60 @@ public class Order implements IID
 			switch(Integer.parseInt(input_scanner.nextLine()))
 			{
 				case 1:
-					/*
-					- List<Product> menu = DBloadProductList();
 					
-					- ShowProductList(menu)
-					- Choose an product by ID
-					- int new_product_id = Integer.parseInt(input_scanner.nextLine());
-					- int product_index = GetProductIndex(products, new_product_id);
+					// exemple: menu = source_list;
+					List<Product> menu = new ArrayList<Product>();// Esta assim só por enquanto.
+																  // Para não ficar dando erro.
+																  // Mas menu deve receber
+																  // a lista carregada do banco
 					
-						if(product_index == -1)
+					ShowProductList(menu);
+					System.out.print("Enter ID of the product: ");
+					int new_product_id = Integer.parseInt(input_scanner.nextLine());
+					int prod_index = GetProductIndex(products, new_product_id);
+					
+						if(prod_index == -1)
 						{
-						- int menu_index = GetProductIndex(menu, new_product_id);
-						- if(menu_index != -1)
+							int menu_index = GetProductIndex(menu, new_product_id);
+							if(menu_index != -1)
 							{
-								int new_product_id = menu.get(menu_index).GetID();
 								String new_product_name = menu.get(menu_index).GetName();
 								double new_product_price = menu.get(menu_index).GetPrice();
 								
-								Product new_product = new Product(new_product_id,
-								new_product_name, new_product_price, 1);
+								Product new_product = new Product
+								(
+									new_product_id,
+									new_product_name,
+									new_product_price, 1
+								);
 								
-								- receive product amount
+								System.out.print("Enter product amount: ");
 								new_product.SetAmount(Integer.parseInt(input_scanner.nextLine()));
 								
 								products.add(new_product);
 							}else
 							{
-								Product not found !
+								System.out.print("Product not found on the list\n");
 							}
 						}else
 						{
-							//Product already exists, you can only improve it
-							//Receive the new amount
-							products.get(product_index).SetAmount;
+							System.out.print("Enter product amount: ");
+							products.get(prod_index).SetAmount(Integer.parseInt(input_scanner.nextLine()));
 						}
 					
-					*/
-				
 					break;
 				case 2:
 					System.out.printf("\nEnter product id: ");
 
-					// tratar excecao aq
-					product_id = Integer.parseInt(input_scanner.nextLine());
+					try
+					{
+						product_id = Integer.parseInt(input_scanner.nextLine());
+					}
+					catch (Exception e)
+					{
+						throw new RuntimeException(e.getMessage());
+					}
+					
 		
 					product_index = GetProductIndex(products, product_id);
 					
@@ -214,9 +224,9 @@ public class Order implements IID
 					try{
 						product_id = Integer.parseInt(input_scanner.nextLine());
 					}
-					cath()
+					catch(Exception e)
 					{
-						
+						throw new RuntimeException(e.getMessage());
 					}
 
 					product_index = GetProductIndex(products, product_id);
@@ -225,8 +235,16 @@ public class Order implements IID
 					{
 						System.out.printf("\nEnter the new amount: ");
 						
-						// tratar exception
-						int new_amount = Integer.parseInt(input_scanner.nextLine());
+						int new_amount;
+						try
+						{
+							new_amount = Integer.parseInt(input_scanner.nextLine());
+						}
+						catch(Exception e)
+						{
+							throw new RuntimeException(e.getMessage());
+						}
+						
 						
 						if (new_amount > 0)
 							products.get(product_index).SetAmount(new_amount);
@@ -243,7 +261,7 @@ public class Order implements IID
 					break;
 			}
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			// substituir
 			throw new RuntimeException(e.getMessage());
@@ -267,7 +285,6 @@ public class Order implements IID
 	
 	public void ShowProductList(List<Product> source_list)
 	{
-		// mash tao fazendo alguma coisa ai
 		int cnt = 0;
 
 		for (Product p : source_list)

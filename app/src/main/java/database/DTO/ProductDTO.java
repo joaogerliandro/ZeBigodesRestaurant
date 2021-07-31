@@ -92,6 +92,16 @@ public class ProductDTO
 			}
 		}
 	}
+	public Product GetProduct(int product_id)
+	{
+		List<Product> database_products = ListProducts();
+		
+		for (int i = 0; i < database_products.size(); i++)
+			if (product_id == database_products.get(i).GetID())
+				return database_products.get(i);
+
+		return (new Product());
+	}
 	
 	public void ClearProductDatabase()
 	{
