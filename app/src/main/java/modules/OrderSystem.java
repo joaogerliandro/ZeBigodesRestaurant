@@ -12,7 +12,7 @@ public class OrderSystem
 {   
     private static int countID = 0;
     
-    public int GetOrderIndex(List<Order> order_list, int order_id)
+    public static int GetOrderIndex(List<Order> order_list, int order_id)
     {   
         for(int count = 0; count < order_list.size(); count++)
             if(order_id == order_list.get(count).GetID())
@@ -21,7 +21,7 @@ public class OrderSystem
         return -1; 
     }
     // Menu is the list of available products
-    public void ShowMenu(List<Product> menu)
+    public static void ShowMenu(List<Product> menu)
 	{
         System.out.printf("\n\t\t[MENU]");
         for(int count = 0; count < menu.size(); count++)
@@ -32,22 +32,21 @@ public class OrderSystem
 	}
     
 	// (Bryan) Presumi que "source_list" era a lista carregada com dados do banco
-    public void AddOrder(List<Order> order_list, List<Product> source_list) //temporary source_list
+    public static void AddOrder(List<Order> order_list, List<Product> source_list) //temporary source_list
     {
         Scanner input_scanner = new Scanner(System.in);
         
-        Client client;
+        Client client = null;
 		List<Product> listProduct = new ArrayList<Product>();
-        String client_name;
+        String client_name = null;
         int table_number, order_id = countID++;
+        
+		System.out.println("Enter the customer name: ");
+		client_name = input_scanner.nextLine();
 
 		try
 		{
-			System.out.println("Enter the customer name: ");
-			// Can put an execution specifies if you want
-			client_name = input_scanner.nextLine();  
-			
-			System.out.print("Enter the table number: ");
+			System.out.print("\nEnter the table number: ");
 			// Can put an execution specifies if you want
 			table_number = Integer.parseInt(input_scanner.nextLine());
 
@@ -60,7 +59,7 @@ public class OrderSystem
 				List<Product> menu = source_list; //(TODO: GERLIANDRO) Carregar com a lista do banco
 				ShowMenu(menu);
 
-				System.out.print("Enter ID of the product: ");
+				System.out.print("\nEnter ID of the product: ");
 				// Can put an execution specifies if you want
 				int new_product_id = Integer.parseInt(input_scanner.nextLine());
 
@@ -81,24 +80,22 @@ public class OrderSystem
 							new_product_price, 1
 						);
 						
-						System.out.print("Enter product amount: ");
+						System.out.print("\nEnter product amount: ");
 						new_product.SetAmount(Integer.parseInt(input_scanner.nextLine()));
 						// TODO(Gerliandro e Felipe) : adicionar uma exceção para prevenir
 						// uma quantidade negativa (tipo -2)
 						listProduct.add(new_product);
 					}
 					else
-					{
-						System.out.println("[Error] This ID does not match any of the products in the menu.");
-					}
+						System.out.println("\n[Error] This ID does not match any of the products in the menu.");
 				}
 				else
 				{
-					System.out.print("Enter product amount: ");
+					System.out.print("\nEnter product amount: ");
 					listProduct.get(product_index).SetAmount(Integer.parseInt(input_scanner.nextLine()));
 				}
 			
-				System.out.print("[1] - If you want to add another product\n"
+				System.out.print("\n[1] - If you want to add another product\n"
 								+"[Otherside] - Enter anything\n");
 								
 				choice = Integer.parseInt(input_scanner.nextLine());
@@ -110,7 +107,7 @@ public class OrderSystem
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException(e.getMessage());
+			System.out.printf("Deu ruim !");
 		}
 		finally
 		{
@@ -118,19 +115,19 @@ public class OrderSystem
 		}
     }
 
-    public void ShowOrderList(List<Order> order_list)
+    public static void ShowOrderList(List<Order> order_list)
     {
         for(int count = 0; count < order_list.size(); count++)
         {
 
-            System.out.printf("\n\t[Order #%d]", (count + 1));
+            System.out.printf("\n\n\t[Order #%d]", (count + 1));
             order_list.get(count).ShowProperties();
 
             order_list.get(count).ShowProductList();
         }
     }
 
-    public void RemoveOrder(List<Order> order_list)
+    public static void RemoveOrder(List<Order> order_list)
     {
         Scanner input_scanner = new Scanner(System.in);
         int order_id, order_index;
@@ -144,16 +141,16 @@ public class OrderSystem
         	order_list.remove(order_index);
         }else
         {
-        	System.out.printf("Order not found\r\n");
+        	System.out.printf("\nOrder not found\r\n");
         }
     }
     
-    public void ClearOrderList(List<Order> order_list)
+    public static void ClearOrderList(List<Order> order_list)
     {
         order_list.clear();
     }
 
-    public void EditOrder(List<Order> order_list)
+    public static void EditOrder(List<Order> order_list)
     {
         Scanner input_scanner = new Scanner(System.in);
         int order_id, order_index;
@@ -214,7 +211,7 @@ public class OrderSystem
 		}
     }
 
-    public Order FindOrder(List<Order> order_list, int order_id)
+    public static Order FindOrder(List<Order> order_list, int order_id)
     {
         // Returns the order sought by id
         int order_found = GetOrderIndex(order_list, order_id);
@@ -224,7 +221,7 @@ public class OrderSystem
             return null; //Temporary
     }
 
-	public int GetProductIndex(List<Product> product_list, int product_id)
+	public static int GetProductIndex(List<Product> product_list, int product_id)
     {   
 		int count = 0;
 

@@ -7,8 +7,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import com.google.common.base.Optional;
-
 import exceptions.*;
 
 public class ConnectionFactory 

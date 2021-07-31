@@ -96,11 +96,16 @@ public class ProductDTO
 	{
 		List<Product> database_products = ListProducts();
 		
+		Product product_found = null;
+		
 		for (int i = 0; i < database_products.size(); i++)
 			if (product_id == database_products.get(i).GetID())
-				return database_products.get(i);
-
-		return (new Product());
+				product_found = database_products.get(i);
+			
+		if(product_found != null)
+			return product_found;
+		else
+			throw new RuntimeException();		
 	}
 	
 	public void ClearProductDatabase()
