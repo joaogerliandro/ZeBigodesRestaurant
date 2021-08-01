@@ -14,6 +14,8 @@ public class Order implements IID
 	private OrderStatus status = OrderStatus.PENDING_ORDER;
 	private List<Product> products;
 	private Client client;
+
+	public Order(){}
 	
 	public Order(int p_order_id, Client p_client, List<Product> product_list)
 	{
