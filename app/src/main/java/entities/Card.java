@@ -6,21 +6,18 @@ public abstract class Card
 	private String m_titular;
 	private String m_verification_code;
 	private String m_card_number;
-    private String m_cpf;
 	private String m_expiration_date;
 
-	public Card(){}
+	public Card() {}
 	
 	public Card(String titular,
 				String ver_code,
 				String card_number,
-				String cpf,
 				String expr_date)
 	{
 		SetTitularName(titular);
 		SetVerificationCode(ver_code);
 		SetCardNumber(card_number);
-		SetCPF(cpf);
 		SetExpirationDate(expr_date);
 	}
 	
@@ -37,11 +34,6 @@ public abstract class Card
 	public String GetCardNumber()
 	{
 		return m_card_number;
-	}
-
-	public String GetCPF()
-	{
-		return m_cpf;
 	}
 
 	public String GetExpirationDate()
@@ -73,11 +65,6 @@ public abstract class Card
         m_titular = title;
     }
 
-    public void SetCPF(String cpf)
-	{
-        m_cpf = cpf;
-    }
-
 	/* Methods */
 	private boolean ValidateCardNumber(String card)
 	{
@@ -87,11 +74,9 @@ public abstract class Card
 	@Override
 	public String toString()
 	{
-		return  "[Card]" + "\n" + 
-				"[+] Titular: " + GetTitularName() +
-				"[+] Ver. Code: " + GetVerificationCode() +
-				"[+] Number: " + GetCardNumber() +
-				"[+] CPF: " + GetCPF() +
+		return  "[+] Titular: "    + GetTitularName()      + '\n' +
+				"[+] Ver. Code: "  + GetVerificationCode() + '\n' +
+				"[+] Number: " 	   + GetCardNumber()       + '\n' +
 				"[+] Expr. Date: " + GetExpirationDate();
 	}
 }

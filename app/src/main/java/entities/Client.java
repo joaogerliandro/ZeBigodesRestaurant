@@ -26,7 +26,7 @@ public class Client implements IID
 		name = p_name;
 	}
 
-	public int GetTable_number() 
+	public int GetTableNumber() 
 	{
 		return table_number;
 	}
@@ -48,13 +48,14 @@ public class Client implements IID
 		client_id = p_client_id;
 	}
 
-	public void ShowProperties()
+	@Override
+	public String toString()
 	{
-		System.out.printf("\n\t- ID: "
+		return "\n\t+ ID: "
 		+ client_id
-		+ "\n\t- Name: "
+		+ "\n\t+ Name: "
 		+ name
-		+ "\n\t- Table Number: "
-		+ table_number);
+		+ "\n\t+ Table Number: "
+		+ table_number + '\n';
 	}
 }
