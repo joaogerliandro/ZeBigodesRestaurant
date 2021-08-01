@@ -1,6 +1,6 @@
 package modules;
 
-import java.util.Scanner;
+import java.util.*;
 
 import entities.*;
 import enumerations.*;
@@ -8,120 +8,172 @@ import exceptions.*;
 
 public class PaymentManager 
 {
-	private Order m_order = null;
+	private static double balance = 0.0;
 
-	public Order GetOrder()
+	public static double GetBalance()
 	{
-		Utilities.ThrowIf(m_order == null, "invalid order");
-		return m_order;
-	}
+		return balance;
+	} 
 
-	public void SetOrder(Order order)
+	public static boolean IsPayable(List<Order> order_list)
 	{
-		Utilities.ThrowIf(order == null, "invalid order argument");
-		m_order = order;
-	}
-
-	public PaymentManager(Order order)
-	{
-		SetOrder(order);
-	}
-
-	public Card GetPaymentInfo()
-	{
-		String card_titular = "";
-		String card_ver_code = "";
-		String card_number = "";
-		String card_cpf = ""; // pra q CPF?
-		String card_expr_date = "";
-
-		Utilities.ThrowIf(m_order == null, "invalid order");
-		
-		OrderStatus ord_status = m_order.getStatus();
-		Utilities.ThrowIf(ord_status != OrderStatus.AWAITING_PAYMENT, 
-						  "invalid order");
-
-		System.out.println("[+] Insira o metodo de pagamento: \n" +
-						   "\n[1] Dinheiro\n"  +
-						   "[2] Cartao de Credito\n" +
-						   "[3] Cartao de Debito\n");
-
-		System.out.print("> ");
-
-		Scanner input_stream = new Scanner(System.in);
-		
-		PaymentMethods payment_method = GetPaymentMethod(input_stream.nextLine());
-		System.out.println();
-
-		if (payment_method == PaymentMethods.Money)
+		for (Order order : order_list)
 		{
-			// logica aqui
-			return null;
+			if(order.GetStatus() == OrderStatus.AwaitingPayment)
+			{
+				return true;
+			}
 		}
+		
+		return false;
+	}
+
+	public static void ShowPayableOrders(List<Order> order_list)
+    {		
+		int count = 0;
+		System.out.println("");
+								
+		for (Order order : order_list)
+		{ 
+			if(order.GetStatus() == OrderStatus.AwaitingPayment)
+			{
+				System.out.printf("\t[Order #%d]", ++count); 
+				System.out.println(order.toString());
+				System.out.println("");
+			}	
+		}
+    }
+
+	public static Order GetPayableOrder(List<Order> order_list, Scanner input_stream)
+	{
+		if (!IsPayable(order_list))
+			throw new NothingPayableOrders("[-] No orders awaiting payment found");
+			
+		//Lista somente os pedidos que estão aguardando pagamento
+		ShowPayableOrders(order_list);
+
+		// Pega o id do pedido -  
+		int order_id = Utilities.GetTextFieldAsInteger("[+] Enter order id: ", input_stream);
+			
+		// Pega o index do pedido
+		int order_index = Utilities.GetOrderIndex(order_list, order_id);
+
+		// Verifica se o pedido pode ser pago
+		Order current_order = order_list.get(order_index);
+			
+		if (current_order.GetStatus() == OrderStatus.AwaitingPayment)
+			return current_order;
 		else
-		{
-			card_titular 	= GetFieldText("[+] Insira o nome do titular do cartao: ", input_stream);
-			card_ver_code 	= GetFieldText("[+] Insira o código de verificação do cartao: ", input_stream);
-			card_number 	= GetFieldText("[+] Insira o número do cartao: ", input_stream);
-			card_cpf 		= GetFieldText("[+] Insira o cpf: ", input_stream);
-			card_expr_date  = GetFieldText("[+] Insira a data de expiração do cartao: ", input_stream);
-		}
-		
-		input_stream.close();
-
-		if (payment_method != PaymentMethods.Money)
-		{
-			Card result;
-
-			if (payment_method == PaymentMethods.DebitCard)
-				result = new DebitCard();
-			else
-				result = new CreditCard();
-
-			result.SetTitularName(card_titular);
-			result.SetVerificationCode(card_ver_code);
-			result.SetCardNumber(card_number);
-			result.SetCPF(card_cpf);
-			result.SetExpirationDate(card_expr_date);
-
-			return result;
-		}	
-		
-		return new CreditCard();
-	}
-
-	// Private Methods
-	private PaymentMethods GetPaymentMethod(String input) throws InvalidUserInput
+			throw new InvalidOrderStatus("\nThe specified order is not awaiting payment");
+	} 
+	
+	public static PaymentMethods ValidatePaymentMethod(int method, Scanner input_stream) throws InvalidPaymentMethod
 	{
-		Integer code;
-		Integer[] valid_codes = { 1, 2, 3 };
+		Integer[] valid_methods = { 1, 2, 3 };
+		boolean valid = false;
 
-		try 
+		for (Integer m : valid_methods)
 		{
-			code = Integer.parseInt(input);
-			if (!Utilities.Contains(valid_codes, code))
-				throw new RuntimeException(); 
-		} 
-		catch (Exception e) 
-		{
-			throw new InvalidUserInput("A entrada passada é inválida, somente os seguintes valores serão aceitos: 1, 2 e 3");
+			if (m == method)
+				valid = true;
 		}
 
-		return PaymentMethods.values()[code - 1];
+		if (!valid)
+			throw new InvalidPaymentMethod("[!] Invalid payment method\n");
+
+		return PaymentMethods.values()[method - 1];
 	}
 
-	private String GetFieldText(String message, Scanner stream)
+	public static void PrintDebitCardInfo(DebitCard card, Order order)
 	{
-		System.out.println(message);
-		System.out.print("> ");
+		balance += order.GetTotalPrice();
 
-		String result = stream.nextLine();
-
-		if (result.isEmpty())
-			throw new EmptyTextField("esse campo não pode estar vazio");
-		
-		System.out.println();
-		return result;
+		System.out.printf("\n\t\t [**] The payment succeeded [**]\n\n" + 
+						  card.toString() +
+						  "[+] Amount paid: " + order.GetTotalPrice() + '\n');
 	}
 
+	public static void PrintCreditCardInfo(CreditCard card, Order order)
+	{
+		balance += order.GetTotalPrice();
+
+		System.out.printf("\n\t\t The payment succeeded\n\n"          + 
+						  card.toString()							  +
+						  "[+] Amount paid: " + order.GetTotalPrice() + '\n');
+	}
+	
+	public static void PayDebit(Order order, Scanner input_stream) throws InvalidOrder
+	{
+		if (order == null)
+			throw new InvalidOrder("[!] The order cannot be paid");
+		
+		String titular     = Utilities.GetTextField("[+] Enter titular name:", input_stream);
+		String ver_code    = Utilities.GetTextField("[+] Enter verification code:", input_stream);
+		String card_number = Utilities.GetTextField("[+] Enter credit card number:", input_stream);
+		String expr_date   = Utilities.GetTextField("[+] Enter expiration date:", input_stream);
+
+		DebitCard debit_card = new DebitCard(titular, ver_code, card_number, expr_date);
+		PrintDebitCardInfo(debit_card, order);
+	}
+
+	public static void PayCredit(Order order, Scanner input_stream) throws InvalidOrder
+	{
+		if (order == null)
+			throw new InvalidOrder("[!] The order cannot be paid");
+		
+		String titular     = Utilities.GetTextField("[+] Enter titular name:", input_stream);
+		String ver_code    = Utilities.GetTextField("[+] Enter verification code:", input_stream);
+		String card_number = Utilities.GetTextField("[+] Enter credit card number:", input_stream);
+		String expr_date   = Utilities.GetTextField("[+] Enter expiration date:", input_stream);
+
+		int parcels = Utilities.GetTextFieldAsInteger("[+] Enter the amount of parcels: ", input_stream);
+
+		CreditCard credit_card = new CreditCard(titular, ver_code, card_number, expr_date, parcels);
+		PrintCreditCardInfo(credit_card, order);
+	}
+	
+	public static void Pay(PaymentMethods method, Order order, Scanner input_stream) throws InvalidOrder
+	{	
+		if (order == null)
+			throw new InvalidOrder("[!] Order cannot be null");
+		
+		switch (method)
+		{
+			case Money:
+				balance += order.GetTotalPrice();
+				order.SetStatus(OrderStatus.Complete);
+				System.out.println("[*] Payment completed successfully");
+				break;
+				
+			case CreditCard:
+				PayCredit(order, input_stream);
+				order.SetStatus(OrderStatus.Complete);
+				System.out.println("[*] Payment completed successfully");
+				break;
+
+			case DebitCard:
+				PayDebit(order, input_stream);
+				order.SetStatus(OrderStatus.Complete);
+				System.out.println("[*] Payment completed successfully");
+				break;
+				
+			default:
+				System.out.println("[!] Invalid option");
+				break;
+		}
+	}
+
+	public static void Initialize(List<Order> order_list, 
+								  int method, Scanner input_stream)
+								  throws InvalidOrder, 
+								  		 InvalidPaymentMethod,
+										 NothingPayableOrders,
+										 InvalidOrderStatus
+									
+
+	{
+		Pay(ValidatePaymentMethod(method, input_stream), 
+			GetPayableOrder(order_list, input_stream), 
+			input_stream);
+	}
 }

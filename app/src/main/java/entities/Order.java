@@ -11,7 +11,7 @@ public class Order implements IID
 {
 	private int order_id;
 	private LocalDateTime order_time; 
-	private OrderStatus status = OrderStatus.PENDING_ORDER;
+	private OrderStatus status = OrderStatus.PendingOrder;
 	private List<Product> products;
 	private Client client;
 
@@ -25,7 +25,7 @@ public class Order implements IID
 		order_time = LocalDateTime.now();
 	}
 
-	public LocalDateTime GetOrder_time()
+	public LocalDateTime GetOrderTime()
 	{
 		return order_time;
 	}
@@ -73,37 +73,40 @@ public class Order implements IID
 
 		for (Product p : products)
 		{
-			System.out.printf("\n\t\t[PRODUCT #%d]", cnt++);
+			System.out.printf("\n\t\t\t[PRODUCT #%d]\n", ++cnt);
 			p.ShowProperties(true);
-			System.out.printf("\n");
+			System.out.println("");
 		}
 	}
 	
-	/*public void ShowProductList(List<Product> source_list)
+	public double GetTotalPrice()
 	{
-		int cnt = 0;
+		double total = 0.0;
 
-		for (Product p : source_list)
+		for(Product product : products)
 		{
-			System.out.printf("\n\t[PRODUCT #%d]", cnt++);
-			p.ShowProperties();
+			total += (product.GetPrice() * product.GetAmount());
 		}
-	}*/
 
-	public void ShowProperties()
+		return total;
+	}
+
+	@Override
+	public String toString()
 	{
 		DateTimeFormatter formatted_data = DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy");
 		String formatted_time = order_time.format(formatted_data);
 		
-		System.out.printf("\n\t- ID: "
-						+ order_id
-						+ "\n\t- Order Time: "
-						+ formatted_time
-						+ "\n\t- Order Status: "
-						+ status.name());
-
-		System.out.printf("\n\t[CLIENT]");
-		client.ShowProperties();
+		return "\n+ ID: "
+				+ order_id
+				+ "\n+ Order Time: "
+				+ formatted_time
+				+ "\n+ Order Status: "
+				+ status.name()
+				+ "\n+ Total Price: "
+				+ GetTotalPrice()
+				+ '\n' + "\n\t\t[Client]" + 
+				client.toString();
 	}
 
 	public int GetProductIndex(List<Product> product_list, int product_id)

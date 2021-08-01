@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import database.DTO.ProductDTO;
-import entities.Client;
-import entities.Order;
-import entities.Product;
+import entities.*;
 import enumerations.OrderStatus;
+import modules.PaymentManager;
 
 public class MainSystem
 {   	
@@ -20,25 +19,11 @@ public class MainSystem
 		int cnt = 0;
         System.out.printf("\n\t\t\t[Product List]\n");
 		
-		for(Product product : products)
+		for (Product product : products)
 		{
-			System.out.printf("\n\t[Product #%d]", ++cnt);
+			System.out.printf("\n\t\t[Product #%d]", ++cnt);
 			product.ShowProperties(false);
 		}
-	}
-
-	public static String GetTextField(String message, Scanner stream)
-	{
-		System.out.println("\n" + message);
-		System.out.print("> ");
-		return stream.nextLine();
-	}
-
-	public static Integer GetTextFieldAsInteger(String message, Scanner stream) throws NumberFormatException
-	{
-		System.out.println("\n" + message);
-		System.out.print("> ");
-		return Integer.parseInt(stream.nextLine());
 	}
 	
 	public static void AddOrder(List<Order> list_order, Scanner input_stream)
@@ -51,8 +36,8 @@ public class MainSystem
 
 		int new_product_id = 0, product_index = 0;
 
-		client_name  = GetTextField("[+] Enter the customer name: ", input_stream);
-		table_number = GetTextFieldAsInteger("[+] Enter the table number: ", input_stream);
+		client_name  = Utilities.GetTextField("[+] Enter the customer name: ", input_stream);
+		table_number = Utilities.GetTextFieldAsInteger("[+] Enter the table number: ", input_stream);
 
 		System.out.println("");
 		client = new Client(client_name, table_number);
@@ -62,7 +47,7 @@ public class MainSystem
 			ShowProductList(g_database_products);
 
 			System.out.println("");
-			new_product_id = GetTextFieldAsInteger("[+] Enter the product id: ", input_stream);
+			new_product_id = Utilities.GetTextFieldAsInteger("[+] Enter the product id: ", input_stream);
 
 			product_index = GetProductIndex(list_products, new_product_id);
 			if (product_index == -1) // produto nao adicionado ainda
@@ -79,21 +64,21 @@ public class MainSystem
 													  new_product_name, 
 													  new_product_price);
 						
-					int product_amount = GetTextFieldAsInteger("[+] Enter the product amount:", input_stream);
+					int product_amount = Utilities.GetTextFieldAsInteger("[+] Enter the product amount:", input_stream);
 					new_product.SetAmount(product_amount);
 					list_products.add(new_product);
 				}
 				else
-					System.out.println("\n[!] - This ID does not match any of the products in the menu.");
+					System.err.println("\n[!] This ID does not match any of the products in the menu.");
 			}
 			else
 			{
-				int product_amount = GetTextFieldAsInteger("[+] Enter the product amount:", input_stream);
+				int product_amount = Utilities.GetTextFieldAsInteger("[+] Enter the product amount:", input_stream);
 				list_products.get(product_index).AddAmount(product_amount);
 			}	
 
 			System.out.println("\n[1] Add another product" + "\n" + 
-							   "[Any Key] Back to Order Manager");
+							   "[AnyKey] Back to Order Manager");
 			
 			System.out.print("> ");
 			choice = Integer.parseInt(input_stream.nextLine());
@@ -139,9 +124,9 @@ public class MainSystem
 		for (Order order : order_list)
 		{
 			System.out.printf("\t[Order #%d]", ++count);
-            order.ShowProperties();
+            System.out.println(order.toString());
             order.ShowProductList();
-			System.out.println("\n");	
+			System.out.println("\n");
 		}
     }
 
@@ -168,8 +153,8 @@ public class MainSystem
 		String product_name = "";
 		
 		System.out.println("");
-		choice = GetTextFieldAsInteger("[1] - Add a new product to the list\n"  +
-						   			   "[2] - Edit an existing product in the list", 
+		choice = Utilities.GetTextFieldAsInteger("[1] Add a new product to the list\n"  +
+						   			   "[2] Edit an existing product in the list", 
 										input_stream);
 
 		if (choice == 1)
@@ -178,12 +163,12 @@ public class MainSystem
 
 			System.out.println("");
 			
-			int product_id = GetTextFieldAsInteger("[+] Enter the order id you want to add:", input_stream);
+			int product_id = Utilities.GetTextFieldAsInteger("[+] Enter the order id you want to add:", input_stream);
 			int new_product_index = GetProductIndex(g_database_products, product_id);
 			
 			if(GetProductIndex(order_List.get(order_index).GetProducts(), product_id) != -1)
 			{
-				System.out.printf("[!] - The product already exists in your product list\n");
+				System.err.printf("[!] The product already exists in your product list\n");
 			}
 			else
 			{
@@ -195,13 +180,13 @@ public class MainSystem
 					Product new_product = new Product(product_id, product_name, price);
 
 					System.out.println("");
-					amount = GetTextFieldAsInteger("Enter the product amount: ", input_stream);
+					amount = Utilities.GetTextFieldAsInteger("[+] Enter the product amount: ", input_stream);
 
 					new_product.SetAmount(amount);
 					order_List.get(order_index).GetProducts().add(new_product);
 				}
 				else
-					System.out.printf("\n[!] - Product not found in the menu\n");
+					System.err.printf("\n[!] Product not found in the menu\n");
 			}
 		}
 		else if(choice == 2)
@@ -210,20 +195,20 @@ public class MainSystem
 
 			System.out.println("\n");
 
-			int product_id = GetTextFieldAsInteger("[+] Enter the id of the product you want to change: ", input_stream);
+			int product_id = Utilities.GetTextFieldAsInteger("[+] Enter the id of the product you want to change: ", input_stream);
 			int product_index = GetProductIndex(order_List.get(order_index).GetProducts(), product_id);
 
 			if(product_index >= 0 && product_index < order_List.get(order_index).GetProducts().size())
 			{
 				System.out.println("");
-				amount = GetTextFieldAsInteger("[+] Enter the new product amount: ", input_stream);
+				amount = Utilities.GetTextFieldAsInteger("[+] Enter the new product amount: ", input_stream);
 				order_List.get(order_index).GetProducts().get(product_index).SetAmount(amount);
 			}
 			else
-				System.out.printf("[!] - Product not found in the product list\n");
+				System.err.printf("[!] Product not found in the product list\n");
 		}
 		else
-			System.out.printf("[!] - Invalid operation, your products have not been changed\n");
+			System.err.printf("[!] Invalid operation, your products have not been changed\n");
 		
 	}
 
@@ -231,12 +216,12 @@ public class MainSystem
     {
 		int table_number, new_status;
         
-		int order_id = GetTextFieldAsInteger("[+] Enter the order id: ", input_stream);
+		int order_id = Utilities.GetTextFieldAsInteger("[+] Enter the order id: ", input_stream);
 		int order_index = GetOrderIndex(order_list, order_id);
 			
 		if (order_index >= 0 && order_index < order_list.size())
 		{
-			if (order_list.get(order_index).GetStatus() != OrderStatus.AWAITING_PAYMENT)
+			if (order_list.get(order_index).GetStatus() != OrderStatus.AwaitingPayment)
 			{
 				System.out.printf(
 					"\n\t\t[EDIT ORDER]\n"        +
@@ -251,38 +236,38 @@ public class MainSystem
 				switch (code) 
 				{
 					case 1:
-						String client_name = GetTextField("Enter the new customer name: ", input_stream);
+						String client_name = Utilities.GetTextField("[+]Enter the new customer name: ", input_stream);
 
 						order_list.get(order_index).GetClient().SetName(client_name);
-						System.out.printf("\n[*] - Updated customer name\n");
+						System.out.printf("\n[*] Updated customer name\n");
 						break;
 					case 2:
-						table_number = GetTextFieldAsInteger("[+] Enter new table number: ", input_stream);
+						table_number = Utilities.GetTextFieldAsInteger("[+] Enter new table number: ", input_stream);
 
 						order_list.get(order_index).GetClient().SetTableNumber(table_number);
-						System.out.printf("\n[*] - Updated table number\n");
+						System.out.printf("\n[*] Updated table number\n");
 						break;
 					case 3:
 						String status_text = "[+] Enter the number representing the new status:\n" +
-									         "[1] - PENDING_ORDER\n"    + 
-											 "[2] - IN_PREPARATION\n"   +
-									         "[3] - AWAITING_PAYMENT\n" + "\n> ";
+									         "[1] - Pending Order\n"    + 
+											 "[2] - In Preparation\n"   +
+									         "[3] - Awaiting Payment\n";
 						
-						new_status = GetTextFieldAsInteger(status_text, input_stream);
+						new_status = Utilities.GetTextFieldAsInteger(status_text, input_stream);
 						switch (new_status)
 						{
 							case 1:
-								order_list.get(order_index).SetStatus(OrderStatus.PENDING_ORDER);
-								System.out.printf("[*] - Order status has been updated\n");
+								order_list.get(order_index).SetStatus(OrderStatus.PendingOrder);
+								System.out.printf("[*] Order status has been updated\n");
 								break;
 							case 2:
-								order_list.get(order_index).SetStatus(OrderStatus.IN_PREPARATION);
+								order_list.get(order_index).SetStatus(OrderStatus.Preparing);
 								break;
 							case 3:
-								order_list.get(order_index).SetStatus(OrderStatus.AWAITING_PAYMENT);
+								order_list.get(order_index).SetStatus(OrderStatus.AwaitingPayment);
 								break;
 							default:
-								System.out.printf("[!] - Invalid command, status remains unchanged\n");
+								System.err.printf("[!] Invalid command, status remains unchanged\n");
 								break;
 						}
 						break;
@@ -290,15 +275,15 @@ public class MainSystem
 						EditProduct(order_list, order_index, input_stream);
 						break;
 					default:
-						System.out.printf("[!] - Invalid operation, your data has not been changed\n");
+						System.err.printf("[!] Invalid operation, your data has not been changed\n");
 						break;
 				}
 			}
 			else
-				System.out.printf("\n[!] - Order can't be edited anymore !");
+				System.err.printf("\n[!] Order can't be edited anymore !");
 		}
 		else
-			System.out.printf("[!] - Order not found\r\n");
+			System.err.printf("[!] Order not found\r\n");
 	}
 	
 	public static void OrderManager(List<Order> order_list, Scanner input)
@@ -316,7 +301,7 @@ public class MainSystem
 				"[4] - Edit Order\n"                        +
 				"[5] - Remove Order\n"                      +
 				"[6] - Delete All Orders\n"                 +
-				"[+] - Enter any other number to go back\n" +
+				"[AnyKey] - Enter any other number to go back\n" +
 				"> "
 			);
 			
@@ -330,18 +315,18 @@ public class MainSystem
 				case 2:
 					if(order_list.size() > 0)
 					{
-						System.out.printf("\n\n\t\t [Orders]");
+						System.out.printf("\n\n\t\t [Orders]\n");
 						ShowOrderList(order_list);	
 					}
 					else
-						System.out.printf("\n[!] - Order list is empty\n");
+						System.out.printf("\n[!] Order list is empty\n");
 					break;
 					
 				case 3:
 					if(g_database_products.size() > 0)
 						ShowProductList(g_database_products);
 					else
-						System.out.printf("\n[!] - There are no products on the menu!");
+						System.out.printf("\n[!] There are no products on the menu!");
 					break;
 	
 				case 4:
@@ -349,23 +334,23 @@ public class MainSystem
 					break;
 				
 				case 5:
-					System.out.println("\nEnter the ID of the order you want to exclude: ");
+					System.out.println("\n[+] Enter the ID of the order you want to exclude: ");
 					int id = Integer.parseInt(input.nextLine());
 	
 					if(RemoveOrder(order_list, id))
-						System.out.printf("\n[*] - Order deleted successfully\n");
+						System.out.printf("\n[*] Order deleted successfully\n");
 					else
-						System.out.printf("\n[!] - Order not found\n");
+						System.out.printf("\n[!] Order not found\n");
 					break;
 				
 				case 6:
 					if(order_list.size() > 0)
 					{
 						order_list.clear();
-						System.out.println("\n[*] - All orders have been deleted successfully\n");
+						System.out.println("\n[*] All orders have been deleted successfully\n");
 					}
 					else
-						System.out.printf("\n[!] - Order list is empty\n");
+						System.out.printf("\n[!] Order list is empty\n");
 					break;
 				
 				default:
@@ -382,7 +367,8 @@ public class MainSystem
 			"[1] - Order Manager\n"     						  +
 			"[2] - Payment Manager\n"                             +
 			"[3] - Product Manager\n"                             +
-			"[4] - Exit\n" 										  +
+			"[4] - Get Balance\n"                                 +
+			"[5] - Exit\n" 										  +
 			"> "
 		);
 	}
@@ -401,23 +387,47 @@ public class MainSystem
 			PrintInfo();
 			
 			option = Integer.parseInt(input_scanner.nextLine());
-			if (option == 4)
+			if (option == 5)
 				break;
 			
-			switch (option)
+			try
 			{
-				case 1:
-					OrderManager(main_order_list, input_scanner);	
-					break;
-				case 2:
-					// PaymentManager.Initialize(main_order_list, input_scanner);
-					break;
-				case 3:
-					// ProductManager.Initialize(main_order_list, input_scanner);
-					break;
-				default:
-					System.out.printf("\n[!] Opção Inválida\n");
-					break;
+				switch (option)
+				{
+					case 1:
+						OrderManager(main_order_list, input_scanner);	
+						break;
+					case 2:
+						int method = Utilities.GetTextFieldAsInteger(
+							"\t\t[PAYMENT MANAGER]\n\n"	     +		
+							"[1] Pay with cash\n"            +
+							"[2] Pay with crebit card\n"     + 
+							"[3] Pay with debit card\n"      + 
+							"[4] Exit\n", 
+							input_scanner
+						);
+
+						if (method == 4)
+							break;
+							
+						PaymentManager.Initialize(main_order_list, method, input_scanner);
+						break;
+					case 3:
+						System.out.printf("\n[+] In Progress ...");
+						// ProductManager.Initialize(main_order_list, input_scanner);
+						break;
+					case 4:
+						System.out.printf("\n[+] Current Balance: %.2f", PaymentManager.GetBalance());
+					
+						break;
+					default:
+						System.out.printf("\n[!] Opção Inválida\n");
+						break;
+				}
+			} 
+			catch(Exception e)
+			{
+				System.out.println(e.toString());
 			}
 		}
 		
@@ -425,23 +435,3 @@ public class MainSystem
 		productDTO.CloseConnection();
     }
 }
-
-
-/*
-	Static double balance;
-
-	PaymentManager(List<Order>, Scanner input)
-		
-	- Lista os pedidos
-	- Recebe o id do pedido que deseja pagar	
-	- Escolha de pagamento
-		- Dinheiro
-			- Só acrescentar balance
-		- Cartão de credito e Debito
-			- Recebe o cliente
-				- Se não existir cartao
-				   -cria cartao
-				- se existir
-					-mostra erro
-			- Debita o valor no balance 		
-*/
