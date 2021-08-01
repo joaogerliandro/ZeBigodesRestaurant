@@ -61,6 +61,11 @@ public class Product implements IID
 		amount = p_amount;
 	}
 
+	public void AddAmount(int increase)
+	{
+		amount += increase;
+	}
+
 	@Override
 	public int GetID()
 	{

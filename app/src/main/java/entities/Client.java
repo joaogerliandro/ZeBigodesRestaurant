@@ -37,48 +37,6 @@ public class Client implements IID
 		table_number = p_table_number;
 	}
 	
-	public void EditName()
-	{
-		Scanner input_scanner = new Scanner(System.in);
-
-		System.out.printf("\t\t[EDIT CLIENT NAME]",
-						  "\nEnter the new name: ");
-
-		try
-		{
-			name = input_scanner.nextLine();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException(e.getMessage());
-		}
-		finally
-		{
-			input_scanner.close();
-		}
-	}
-
-	public void EditTableNumber()
-	{
-		Scanner input_scanner = new Scanner(System.in);
-
-		System.out.printf("\t\t[EDIT TABLE NUMBER]",
-						  "\nEnter the new table number: ");
-
-		try
-		{
-			table_number = Integer.parseInt(input_scanner.nextLine());
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException(e.getMessage());
-		}
-		finally
-		{
-			input_scanner.close();
-		}
-	}
-
 	@Override
 	public int GetID()
 	{
