@@ -37,7 +37,7 @@ public class CreditCard extends Card
 	@Override
 	public String toString()
 	{
-		return "[CreditCard]" + "\n" + super.toString() 
-			   + "[+] Number of parcels: " + m_parcels + '\n';
+		return "[CreditCard]" + "\n" + super.toString() + '\n'
+			   + "\n[+] Number of parcels: " + m_parcels + '\n';
 	}
 }

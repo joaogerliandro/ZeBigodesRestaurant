@@ -73,7 +73,7 @@ public class Order implements IID
 
 		for (Product p : products)
 		{
-			System.out.printf("\n\t\t[PRODUCT #%d]", ++cnt);
+			System.out.printf("\n\t\t\t[PRODUCT #%d]\n", ++cnt);
 			p.ShowProperties(true);
 			System.out.println("");
 		}
@@ -97,15 +97,15 @@ public class Order implements IID
 		DateTimeFormatter formatted_data = DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy");
 		String formatted_time = order_time.format(formatted_data);
 		
-		return "\n\t+ ID: "
+		return "\n+ ID: "
 				+ order_id
-				+ "\n\t+ Order Time: "
+				+ "\n+ Order Time: "
 				+ formatted_time
-				+ "\n\t+ Order Status: "
+				+ "\n+ Order Status: "
 				+ status.name()
-				+ "\n\t+ Total Price: "
+				+ "\n+ Total Price: "
 				+ GetTotalPrice()
-				+ '\n' + "\t[CLIENT]" + 
+				+ '\n' + "\n\t\t[Client]" + 
 				client.toString();
 	}
 

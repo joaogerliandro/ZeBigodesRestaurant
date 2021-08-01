@@ -19,9 +19,9 @@ public class MainSystem
 		int cnt = 0;
         System.out.printf("\n\t\t\t[Product List]\n");
 		
-		for(Product product : products)
+		for (Product product : products)
 		{
-			System.out.printf("\n\t[Product #%d]", ++cnt);
+			System.out.printf("\n\t\t[Product #%d]", ++cnt);
 			product.ShowProperties(false);
 		}
 	}
@@ -78,7 +78,7 @@ public class MainSystem
 			}	
 
 			System.out.println("\n[1] Add another product" + "\n" + 
-							   "[Any Key] Back to Order Manager");
+							   "[AnyKey] Back to Order Manager");
 			
 			System.out.print("> ");
 			choice = Integer.parseInt(input_stream.nextLine());
@@ -124,9 +124,9 @@ public class MainSystem
 		for (Order order : order_list)
 		{
 			System.out.printf("\t[Order #%d]", ++count);
-            order.toString();
+            System.out.println(order.toString());
             order.ShowProductList();
-			System.out.println("\n");	
+			System.out.println("\n");
 		}
     }
 
@@ -249,9 +249,9 @@ public class MainSystem
 						break;
 					case 3:
 						String status_text = "[+] Enter the number representing the new status:\n" +
-									         "[1] - PENDING_ORDER\n"    + 
-											 "[2] - IN_PREPARATION\n"   +
-									         "[3] - AWAITING_PAYMENT\n" + "\n> ";
+									         "[1] - Pending Order\n"    + 
+											 "[2] - In Preparation\n"   +
+									         "[3] - Awaiting Payment\n";
 						
 						new_status = Utilities.GetTextFieldAsInteger(status_text, input_stream);
 						switch (new_status)
@@ -301,7 +301,7 @@ public class MainSystem
 				"[4] - Edit Order\n"                        +
 				"[5] - Remove Order\n"                      +
 				"[6] - Delete All Orders\n"                 +
-				"[+] - Enter any other number to go back\n" +
+				"[AnyKey] - Enter any other number to go back\n" +
 				"> "
 			);
 			
@@ -315,7 +315,7 @@ public class MainSystem
 				case 2:
 					if(order_list.size() > 0)
 					{
-						System.out.printf("\n\n\t\t [Orders]");
+						System.out.printf("\n\n\t\t [Orders]\n");
 						ShowOrderList(order_list);	
 					}
 					else
@@ -367,7 +367,8 @@ public class MainSystem
 			"[1] - Order Manager\n"     						  +
 			"[2] - Payment Manager\n"                             +
 			"[3] - Product Manager\n"                             +
-			"[4] - Exit\n" 										  +
+			"[4] - Get Balance\n"                                 +
+			"[5] - Exit\n" 										  +
 			"> "
 		);
 	}
@@ -386,23 +387,47 @@ public class MainSystem
 			PrintInfo();
 			
 			option = Integer.parseInt(input_scanner.nextLine());
-			if (option == 4)
+			if (option == 5)
 				break;
 			
-			switch (option)
+			try
 			{
-				case 1:
-					OrderManager(main_order_list, input_scanner);	
-					break;
-				case 2:
-					PaymentManager.Initialize(main_order_list, input_scanner);
-					break;
-				case 3:
-					// ProductManager.Initialize(main_order_list, input_scanner);
-					break;
-				default:
-					System.out.printf("\n[!] Opção Inválida\n");
-					break;
+				switch (option)
+				{
+					case 1:
+						OrderManager(main_order_list, input_scanner);	
+						break;
+					case 2:
+						int method = Utilities.GetTextFieldAsInteger(
+							"\t\t[PAYMENT MANAGER]\n\n"	     +		
+							"[1] Pay with cash\n"            +
+							"[2] Pay with crebit card\n"     + 
+							"[3] Pay with debit card\n"      + 
+							"[4] Exit\n", 
+							input_scanner
+						);
+
+						if (method == 4)
+							break;
+							
+						PaymentManager.Initialize(main_order_list, method, input_scanner);
+						break;
+					case 3:
+						System.out.printf("\n[+] In Progress ...");
+						// ProductManager.Initialize(main_order_list, input_scanner);
+						break;
+					case 4:
+						System.out.printf("\n[+] Current Balance: %.2f", PaymentManager.GetBalance());
+					
+						break;
+					default:
+						System.out.printf("\n[!] Opção Inválida\n");
+						break;
+				}
+			} 
+			catch(Exception e)
+			{
+				System.out.println(e.toString());
 			}
 		}
 		

@@ -1,5 +1,6 @@
 package entities;
 
+import exceptions.*;
 import interfaces.IID;
 
 public class Product implements IID 
@@ -56,8 +57,11 @@ public class Product implements IID
 		return amount;
 	}
 
-	public void SetAmount(int p_amount) 
+	public void SetAmount(int p_amount) throws InvalidProductAmount
 	{
+		if (p_amount <= 0)
+			throw new InvalidProductAmount("The amount of the product can not be less than zero.");
+
 		amount = p_amount;
 	}
 
@@ -82,22 +86,22 @@ public class Product implements IID
 	{
 		if(show_amount == true) 
 		{
-			System.out.printf("\n\t\t- ID: "
+			System.out.printf("\n\t\t+ ID: "
 					+ product_id
-					+ "\n\t\t- Name: "
+					+ "\n\t\t+ Name: "
 					+ name
-					+ "\n\t\t- Amount: "
+					+ "\n\t\t+ Amount: "
 					+ amount
-					+ "\n\t\t- Total Price: "
+					+ "\n\t\t+ Total Price: "
 					+ (amount * price));
 		}
 		else
 		{
-			System.out.printf("\n\t- ID: "
+			System.out.printf("\n\t\t+ ID: "
 					+ product_id
-					+ "\n\t- Name: "
+					+ "\n\t\t+ Name: "
 					+ name
-					+ "\n\t- Price: "
+					+ "\n\t\t+ Price: "
 					+ (amount * price));
 		}
 	}	

@@ -56,6 +56,6 @@ public class Client implements IID
 		+ "\n\t+ Name: "
 		+ name
 		+ "\n\t+ Table Number: "
-		+ table_number + '\n';
+		+ table_number;
 	}
 }

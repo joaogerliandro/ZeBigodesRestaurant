@@ -47,7 +47,7 @@ public class PaymentManager
 	public static Order GetPayableOrder(List<Order> order_list, Scanner input_stream)
 	{
 		if (!IsPayable(order_list))
-			throw new NothingPayableOrders("No orders awaiting payment found");
+			throw new NothingPayableOrders("[-] No orders awaiting payment found");
 			
 		//Lista somente os pedidos que estão aguardando pagamento
 		ShowPayableOrders(order_list);
@@ -64,25 +64,19 @@ public class PaymentManager
 		if (current_order.GetStatus() == OrderStatus.AwaitingPayment)
 			return current_order;
 		else
-			throw new InvalidOrderStatus("The specified order is not awaiting payment");
+			throw new InvalidOrderStatus("\nThe specified order is not awaiting payment");
 	} 
 	
-	public static PaymentMethods GetPaymentMethod(Scanner input_stream) throws InvalidPaymentMethod
+	public static PaymentMethods ValidatePaymentMethod(int method, Scanner input_stream) throws InvalidPaymentMethod
 	{
-		int method = Utilities.GetTextFieldAsInteger("[1] pay with cash\n"            +
-													 "[2] Pay via debit card\n"     + 
-													 "[3] Pagar via Cartão de crédito\n"    + 
-													 "[4] Exit\n", 
-													 input_stream);
-													 
-		Integer[] valid_methods = {1, 2, 3, 4};
+		Integer[] valid_methods = { 1, 2, 3 };
 		boolean valid = false;
 
 		for (Integer m : valid_methods)
 		{
 			if (m == method)
 				valid = true;
-		}		
+		}
 
 		if (!valid)
 			throw new InvalidPaymentMethod("[!] Invalid payment method\n");
@@ -147,16 +141,22 @@ public class PaymentManager
 		{
 			case Money:
 				balance += order.GetTotalPrice();
+				order.SetStatus(OrderStatus.Complete);
 				System.out.println("[*] Payment completed successfully");
 				break;
+				
 			case CreditCard:
 				PayCredit(order, input_stream);
+				order.SetStatus(OrderStatus.Complete);
 				System.out.println("[*] Payment completed successfully");
 				break;
+
 			case DebitCard:
 				PayDebit(order, input_stream);
+				order.SetStatus(OrderStatus.Complete);
 				System.out.println("[*] Payment completed successfully");
 				break;
+				
 			default:
 				System.out.println("[!] Invalid option");
 				break;
@@ -164,14 +164,15 @@ public class PaymentManager
 	}
 
 	public static void Initialize(List<Order> order_list, 
-								  Scanner input_stream)
+								  int method, Scanner input_stream)
 								  throws InvalidOrder, 
 								  		 InvalidPaymentMethod,
-										 NothingPayableOrders
+										 NothingPayableOrders,
+										 InvalidOrderStatus
 									
 
 	{
-		Pay(GetPaymentMethod(input_stream), 
+		Pay(ValidatePaymentMethod(method, input_stream), 
 			GetPayableOrder(order_list, input_stream), 
 			input_stream);
 	}
