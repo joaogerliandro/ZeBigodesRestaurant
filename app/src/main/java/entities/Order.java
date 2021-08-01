@@ -1,9 +1,8 @@
 package entities;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Scanner;
 
 import enumerations.OrderStatus;
 import interfaces.IID;
@@ -24,7 +23,7 @@ public class Order implements IID
 		order_time = LocalDateTime.now();
 	}
 
-	public LocalDateTime GetOrder_time() // ajeitar
+	public LocalDateTime GetOrder_time()
 	{
 		return order_time;
 	}
@@ -74,6 +73,7 @@ public class Order implements IID
 		{
 			System.out.printf("\n\t\t[PRODUCT #%d]", cnt++);
 			p.ShowProperties(true);
+			System.out.printf("\n");
 		}
 	}
 	
@@ -90,10 +90,13 @@ public class Order implements IID
 
 	public void ShowProperties()
 	{
+		DateTimeFormatter formatted_data = DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy");
+		String formatted_time = order_time.format(formatted_data);
+		
 		System.out.printf("\n\t- ID: "
 						+ order_id
-						+ "\n\t- Time: "
-						+ order_time
+						+ "\n\t- Order Time: "
+						+ formatted_time
 						+ "\n\t- Order Status: "
 						+ status.name());
 

@@ -1,6 +1,5 @@
 package entities;
 
-import java.util.Scanner;
 import interfaces.IID;
 
 public class Client implements IID

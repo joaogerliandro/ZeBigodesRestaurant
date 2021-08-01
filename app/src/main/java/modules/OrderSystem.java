@@ -1,16 +1,13 @@
 package modules;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import entities.Client;
+
 import entities.Order;
 import entities.Product;
-import enumerations.OrderStatus;
+
 
 public class OrderSystem 
 {   
-    private static int countID = 0;
     
     public static int GetOrderIndex(List<Order> order_list, int order_id)
     {   
