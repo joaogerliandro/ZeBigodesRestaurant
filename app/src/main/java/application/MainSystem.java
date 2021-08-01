@@ -24,10 +24,10 @@ public class MainSystem
 
 		int new_product_id = 0, product_index = 0;
 		
-		System.out.printf("\nDigite o nome do cliente: ");
+		System.out.printf("\nEnter the customer name: ");
 		name_client = in.nextLine();
 
-		System.out.printf("\nDigite o numero da mesa: ");
+		System.out.printf("\nEnter the table number: ");
 		table_number = Integer.parseInt(in.nextLine());
 
 		System.out.println("");
@@ -40,7 +40,7 @@ public class MainSystem
 		{
 			ShowMenu(source_list);
 
-			System.out.print("\n\nEnter ID of the product: ");
+			System.out.print("\n\nEnter the product id: ");
 			new_product_id = Integer.parseInt(in.nextLine());
 
 			product_index = GetProductIndex(list_products, new_product_id);
@@ -60,7 +60,7 @@ public class MainSystem
 							new_product_price, 1
 						);
 						
-						System.out.print("\nEnter product amount: ");
+						System.out.print("\nEnter the product amount: ");
 						int amount = Integer.parseInt(in.nextLine());
 						
 						new_product.SetAmount(amount);
@@ -71,7 +71,7 @@ public class MainSystem
 			}
 			else
 			{
-					System.out.print("\nEnter product amount: ");
+					System.out.print("\nEnter the product amount: ");
 					int amount = Integer.parseInt(in.nextLine());
 					
 					//Somar ao existente
@@ -148,8 +148,8 @@ public class MainSystem
 		double price = 0.0;
 		String name_product = "";
 
-		System.out.println("\n[1] - Adicionar um novo produto na lista\n"      +
-							 "[2] - Editar um produto ja existente na lista\n" +
+		System.out.println("\n[1] - Add a new product to the list\n"      +
+							 "[2] - Edit an existing product in the list\n" +
 							 "> ");
 		
 		choice = Integer.parseInt(in.nextLine());
@@ -158,12 +158,12 @@ public class MainSystem
 		{
 			ShowMenu(source_list);
 
-			System.out.println("\nDigite o id do pedido que deseja adicionar: ");
+			System.out.println("\nEnter the order id you want to add: ");
 			int id_product       = Integer.parseInt(in.nextLine());
 			int indx_new_product = GetProductIndex(source_list, id_product);
 			
 			if(GetProductIndex(order_List.get(order_indx).GetProducts(), id_product) != -1)
-				System.out.printf("[!] - O produto já existe na sua lista de produtos\n");
+				System.out.printf("[!] - The product already exists in your product list\n");
 			else
 				if(indx_new_product >= 0 && indx_new_product < source_list.size())
 				{
@@ -172,36 +172,36 @@ public class MainSystem
 
 					Product new_Product = new Product(id_product, name_product, price);
 
-					System.out.println("\nDigite a quantidade: ");
+					System.out.println("\nEnter the product amount: ");
 					amount = Integer.parseInt(in.nextLine());
 
 					new_Product.SetAmount(amount);
 
 					order_List.get(order_indx).GetProducts().add(new_Product);
 				}else
-					System.out.printf("\n[!] - Produto não se encontra no menu\n");
+					System.out.printf("\n[!] - Product not on the menu\n");
 		}
 		else if(choice == 2)
 		{
 			ShowMenu(order_List.get(order_indx).GetProducts());
 
-			System.out.printf("\nDigite o id do produto que seja alterar: ");
+			System.out.printf("\nEnter the id of the product you want to change: ");
 			int id_product = Integer.parseInt(in.nextLine());
 
 			int indx_product = GetProductIndex(order_List.get(order_indx).GetProducts(), id_product);
 
 			if(indx_product >= 0 && indx_product < order_List.get(order_indx).GetProducts().size())
 			{
-				System.out.printf("\nDigite a nova quantidade do produto: ");
+				System.out.printf("\nEnter the new product amount: ");
 				amount = Integer.parseInt(in.nextLine());
 
 				order_List.get(order_indx).GetProducts().get(indx_product).SetAmount(amount);
 			}else
-				System.out.printf("[!] - Produto não encontra na lista de produtos\n");
+				System.out.printf("[!] - Product not found in the product list\n");
 		}
 		else
 		{
-			System.out.printf("[!] - Operação invalida, seus produto não foram alterados\n");
+			System.out.printf("[!] - Invalid operation, your products have not been changed\n");
 		}
 	}
 	public static void EditOrder(List<Order> order_list, List<Product> source_list, Scanner in)
@@ -210,7 +210,7 @@ public class MainSystem
 		String name_client;
 		int table_number, new_status;
         
-        System.out.printf("\nEnter order id: ");
+        System.out.printf("\nEnter the order id: ");
 
 		order_id = Integer.parseInt(in.nextLine());
 		order_index = GetOrderIndex(order_list, order_id);
@@ -231,23 +231,23 @@ public class MainSystem
 				switch (Integer.parseInt(in.nextLine())) 
 				{
 					case 1:
-						System.out.printf("\nDigite o novo nome do cliente: ");
+						System.out.printf("\nEnter the new customer name: ");
 						name_client = in.nextLine();
 
 						order_list.get(order_index).GetClient().SetName(name_client);
-						System.out.printf("\n[*] - Nome atualizado\n");
+						System.out.printf("\n[*] - Updated customer name\n");
 						break;
 					case 2:
-						System.out.printf("\nDigite o novo numero da mesa: ");
+						System.out.printf("\nEnter new table number: ");
 						table_number = Integer.parseInt(in.nextLine());
 
 						order_list.get(order_index).GetClient().SetTableNumber(table_number);
-						System.out.printf("\n[*] - Numero da mesa atualizado\n");
+						System.out.printf("\n[*] - Updated table number\n");
 						break;
 					case 3:
-						System.out.printf("\nDigite o numero que representa o novo status:\n"     +
+						System.out.printf("\nEnter the number representing the new status:\n"     +
 										  "[1] - PENDING_ORDER\n"    + "[2] - IN_PREPARATION\n" +
-										  "[3] - AWAITING_PAYMENT\n");
+										  "[3] - AWAITING_PAYMENT\n" + "\n> ");
 						
 						new_status = Integer.parseInt(in.nextLine());
 
@@ -255,7 +255,7 @@ public class MainSystem
 						{
 							case 1:
 								order_list.get(order_index).SetStatus(OrderStatus.PENDING_ORDER);
-								System.out.printf("[*] - Status do pedido foi atualizado\n");
+								System.out.printf("[*] - Order status has been updated\n");
 								break;
 							case 2:
 								order_list.get(order_index).SetStatus(OrderStatus.IN_PREPARATION);
@@ -264,7 +264,7 @@ public class MainSystem
 								order_list.get(order_index).SetStatus(OrderStatus.AWAITING_PAYMENT);
 								break;
 							default:
-								System.out.printf("[!] - Comando invalido, status permanece inalterado\n");
+								System.out.printf("[!] - Invalid command, status remains unchanged\n");
 								break;
 						}
 						break;
@@ -272,7 +272,7 @@ public class MainSystem
 						EditProduct(order_list, order_index, source_list, in);
 						break;
 					default:
-						System.out.printf("[!] - Operação invalida, seus dados não foram alterados");
+						System.out.printf("[!] - Invalid operation, your data has not been changed\n");
 						break;
 				}
 			}else
@@ -280,118 +280,124 @@ public class MainSystem
 		else
 			System.out.printf("[!] - Order not found\r\n");
 	}
-	public static void main(String[] args) 
-    {
-		ProductDTO productDTO = new ProductDTO();
-		List<Order> order_list = new ArrayList<Order>();
-		List<Product> menu = productDTO.ListProducts();
-
-		Scanner input = new Scanner(System.in);
-		int operation = 0, sent = 1;
-
+	
+	public static void OrderManager(List<Order> order_list,List<Product> menu, Scanner input)
+	{
+		int sent = 1, operation = 0;
+		
 		while(sent == 1)
 		{
 
-		System.out.printf
-		(
-			"\n\n\t\t\t[ZeBigode's Restaurant]\n\n"                                 +
-			"[1] - Add Orders\n"                                 +
-			"[2] - List Orders\n"                               +
-			"[3] - Show Menu\n"                                   +
-			"[4] - Edit Order\n"                                +
-			"[5] - Remove Order\n"                              +
-			"[6] - Delete All Orders\n"                         +
-			"[+] - Enter any other number to close the program\n" +
-			"> "
-		);
-		
-		operation = Integer.parseInt(input.nextLine());
-
-		switch(operation)
-		{
-			case 1:
-				AddOrder(order_list, menu, input);
-				break;
-
-			case 2:
-				if(order_list.size() > 0)
-				{
-					System.out.printf("\n\n\t\t [ORDERS]");
-					ShowOrderList(order_list);	
-				}
-				else
-					System.out.printf("\n[!] - Order list is empty\n");
-				break;
+			System.out.printf
+			(
+				"\n\n\t\t\t[Order Manager]\n\n"                                 +
+				"[1] - Add Orders\n"                                 +
+				"[2] - List Orders\n"                               +
+				"[3] - Show Menu\n"                                   +
+				"[4] - Edit Order\n"                                +
+				"[5] - Remove Order\n"                              +
+				"[6] - Delete All Orders\n"                         +
+				"[+] - Enter any other number to go back\n" +
+				"> "
+			);
+			
+			operation = Integer.parseInt(input.nextLine());
+	
+			switch(operation)
+			{
+				case 1:
+					AddOrder(order_list, menu, input);
+					break;
+	
+				case 2:
+					if(order_list.size() > 0)
+					{
+						System.out.printf("\n\n\t\t [ORDERS]");
+						ShowOrderList(order_list);	
+					}
+					else
+						System.out.printf("\n[!] - Order list is empty\n");
+					break;
+					
+				case 3:
+					if(menu.size() > 0)
+						ShowMenu(menu);
+					else
+						System.out.printf("\n[!] - There are no products on the menu!");
+					break;
+	
+				case 4:
+					EditOrder(order_list, menu, input);
+					break;
 				
-			case 3:
-				if(menu.size() > 0)
-					ShowMenu(menu);
-				else
-					System.out.printf("\n[!] - There are no products on the menu!");
-				break;
+				case 5:
+					System.out.println("\nEnter the ID of the order you want to exclude: ");
+					int id = Integer.parseInt(input.nextLine());
+	
+					if(RemoveOrder(order_list, id))
+						System.out.printf("\n[*] - Order deleted successfully\n");
+					else
+						System.out.printf("\n[!] - Order not found\n");
+					break;
+				
+				case 6:
+					if(order_list.size() > 0)
+					{
+						order_list.clear();
+						System.out.println("\n[*] - All orders have been deleted successfully\n");
+					}
+					else
+						System.out.printf("\n[!] - Order list is empty\n");
+					break;
+				
+				default:
+					sent = 0;
+					break;
+			}
+		}
+	}	
+	
+	
+	public static void main(String[] args) 
+	{
+		ProductDTO productDTO = new ProductDTO();
+		List<Order> main_order_list = new ArrayList<Order>();
+		List<Product> main_menu = productDTO.ListProducts();
 
-			case 4:
-				EditOrder(order_list, menu, input);
-				break;
-			
-			case 5:
-				System.out.println("\nEnter the ID of the order you want to exclude: ");
-				int id = Integer.parseInt(input.nextLine());
-
-				if(RemoveOrder(order_list, id))
-					System.out.printf("\n[*] - Order deleted successfully\n");
-				else
-					System.out.printf("\n[!] - Order not found\n");
-				break;
-			
-			case 6:
-				if(order_list.size() > 0)
-				{
-					order_list.clear();
-					System.out.println("\n[*] - All orders have been deleted successfully\n");
-				}
-				else
-					System.out.printf("\n[!] - Order list is empty\n");
-				break;
-			
-			default:
-				System.out.printf("\n[X] - Closed program\n");
-				sent = 0;
-				break;
-		}   
-
-	}
-
-    	//ProductDTO product_dto = new ProductDTO();//Inicia Conex�
-    	
-    	/*
-    	*	Antes disso:
-    	*	João, Felipe e eu
-    	*	Tirar io entidades
-    	* 
-    	* interface que informações usuario
-    	* add pedido(Todos)
-    	* edita pedido(Todos)                      O
-    	* remove pedido(Zazac)                   /| |\__
-    	* remover todos(Jonadabe)               | |_| 
-    	*                                         | |
-    	**/                                     
+		Scanner input_scanner = new Scanner(System.in);
+		int option = 0, key = 1;
 		
+		while(key == 1)
+		{
+			System.out.printf
+			(
+				"\n\n\t\t\t[ZeBigode's Restaurant]\n\n"                                 +
+				"[1] - Order Manager\n"                                 +
+				"[2] - Payment Manager\n"                               +
+				"[3] - Product Manager\n"                                   +
+				"[+] - Enter any other number to close the program\n" +
+				"> "
+			);
+			
+			option = Integer.parseInt(input_scanner.nextLine());
+			
+			switch(option)
+			{
+				case 1:
+					OrderManager(main_order_list, main_menu, input_scanner);	
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				default:
+					System.out.printf("\n[X] - Closed program\n");
+					key = 0;
+					break;			
+			}
+		}
 		
-		/*		Estrutura - algoritmo
-		 * 
-		 * nome do sistema
-		 * 
-		 * op��es do sistema(Todas as funcionalidades do sistema)
-		 * 
-		 * todas as funcionalidade vai em while e switch
-		 * (Se alguem tiver ideia melhor, avise)
-		 * 
-		 * 
-		 * */
-
-		input.close();
-
+		input_scanner.close();
 		productDTO.CloseConnection();
     }
 }
