@@ -12,46 +12,57 @@ import enumerations.OrderStatus;
 
 public class MainSystem
 {   	
-	private static int countID = 0;
+	private static int g_count_id = 0;
+	private static List<Product> g_database_products;
 
-	
-	public static void AddOrder(List<Order> list_order, List<Product> source_list, Scanner in)
+	public static void ShowProductList(List<Product> products)
 	{
-		String name_client    = "";
-		int    table_number   = 0, id_order = countID++;
+		int cnt = 0;
+        System.out.printf("\n\t\t\t[Product List]\n");
+		
+		for (Product product : products)
+		{
+			System.out.printf("\n\t[Product #%d]", ++cnt);
+			product.ShowProperties(false);
+		}
+	}
+	
+	public static void AddOrder(List<Order> list_order, Scanner input_stream)
+	{
+		String client_name   = "";
+		int    table_number = 0, order_id = g_count_id++;
+		
 		List<Product> list_products = new ArrayList<Product>();
-		Client client;
+		Client client = null;
 
 		int new_product_id = 0, product_index = 0;
 		
 		System.out.printf("\nEnter the customer name: ");
-		name_client = in.nextLine();
+		client_name = input_stream.nextLine();
 
 		System.out.printf("\nEnter the table number: ");
-		table_number = Integer.parseInt(in.nextLine());
+		table_number = Integer.parseInt(input_stream.nextLine());
 
 		System.out.println("");
-
-		client = new Client(name_client, table_number);
+		client = new Client(client_name, table_number);
 		
 		int choice = 1;
-
-		while(choice == 1)
+		while (choice == 1)
 		{
-			ShowMenu(source_list);
+			ShowProductList(g_database_products);
 
 			System.out.print("\n\nEnter the product id: ");
-			new_product_id = Integer.parseInt(in.nextLine());
+			new_product_id = Integer.parseInt(input_stream.nextLine());
 
 			product_index = GetProductIndex(list_products, new_product_id);
 
 			if(product_index == -1)
 			{
-					int menu_index = GetProductIndex(source_list, new_product_id);
+					int menu_index = GetProductIndex(g_database_products, new_product_id);
 					if(menu_index != -1)
 					{
-						String new_product_name  = source_list.get(menu_index).GetName();
-						double new_product_price = source_list.get(menu_index).GetPrice();
+						String new_product_name  = g_database_products.get(menu_index).GetName();
+						double new_product_price = g_database_products.get(menu_index).GetPrice();
 						
 						Product new_product = new Product
 						(
@@ -61,7 +72,7 @@ public class MainSystem
 						);
 						
 						System.out.print("\nEnter the product amount: ");
-						int amount = Integer.parseInt(in.nextLine());
+						int amount = Integer.parseInt(input_stream.nextLine());
 						
 						new_product.SetAmount(amount);
 						list_products.add(new_product);
@@ -72,7 +83,7 @@ public class MainSystem
 			else
 			{
 					System.out.print("\nEnter the product amount: ");
-					int amount = Integer.parseInt(in.nextLine());
+					int amount = Integer.parseInt(input_stream.nextLine());
 					
 					//Somar ao existente
 					list_products.get(product_index).AddAmount(amount);
@@ -81,14 +92,12 @@ public class MainSystem
 			System.out.print("\n[1] - If you want to add another product\n"
 							+"[Otherside] - Enter anything\n");
 								
-			choice = Integer.parseInt(in.nextLine());
+			choice = Integer.parseInt(input_stream.nextLine());
 		}
 
-		Order order = new Order(id_order, client, list_products);
-
-		list_order.add(order);
-		//in.close();
+		list_order.add(new Order(order_id, client, list_products));
 	}
+	
 	public static int GetProductIndex(List<Product> product_list, int product_id)
     {   
 		int count = 0;
@@ -102,15 +111,7 @@ public class MainSystem
 
         return -1;
     }
-	public static void ShowMenu(List<Product> menu)
-	{
-        System.out.printf("\n\t\t\t[MENU]\n");
-        for(int count = 0; count < menu.size(); count++)
-		{
-			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
-			menu.get(count).ShowProperties(false);
-		}
-	}
+
 	public static boolean RemoveOrder(List<Order> order_list, int order_id)
 	{
 		for(int count = 0; count < order_list.size(); ++count)
@@ -141,8 +142,7 @@ public class MainSystem
 
         return -1; 
     }
-	public static void EditProduct( List<Order> order_List, int order_indx, 
-									List<Product> source_list, Scanner in)
+	public static void EditProduct( List<Order> order_List, int order_indx, Scanner in)
 	{
 		int choice = 0, amount = 0;
 		double price = 0.0;
@@ -156,19 +156,19 @@ public class MainSystem
 
 		if(choice == 1)
 		{
-			ShowMenu(source_list);
+			ShowProductList(g_database_products);
 
 			System.out.println("\nEnter the order id you want to add: ");
 			int id_product       = Integer.parseInt(in.nextLine());
-			int indx_new_product = GetProductIndex(source_list, id_product);
+			int indx_new_product = GetProductIndex(g_database_products, id_product);
 			
 			if(GetProductIndex(order_List.get(order_indx).GetProducts(), id_product) != -1)
 				System.out.printf("[!] - The product already exists in your product list\n");
 			else
-				if(indx_new_product >= 0 && indx_new_product < source_list.size())
+				if(indx_new_product >= 0 && indx_new_product < g_database_products.size())
 				{
-					name_product = source_list.get(indx_new_product).GetName();
-					price = source_list.get(indx_new_product).GetPrice();
+					name_product = g_database_products.get(indx_new_product).GetName();
+					price = g_database_products.get(indx_new_product).GetPrice();
 
 					Product new_Product = new Product(id_product, name_product, price);
 
@@ -183,7 +183,7 @@ public class MainSystem
 		}
 		else if(choice == 2)
 		{
-			ShowMenu(order_List.get(order_indx).GetProducts());
+			ShowProductList(order_List.get(order_indx).GetProducts());
 
 			System.out.printf("\nEnter the id of the product you want to change: ");
 			int id_product = Integer.parseInt(in.nextLine());
@@ -204,7 +204,7 @@ public class MainSystem
 			System.out.printf("[!] - Invalid operation, your products have not been changed\n");
 		}
 	}
-	public static void EditOrder(List<Order> order_list, List<Product> source_list, Scanner in)
+	public static void EditOrder(List<Order> order_list, Scanner in)
     {
         int order_id, order_index;
 		String name_client;
@@ -269,7 +269,7 @@ public class MainSystem
 						}
 						break;
 					case 4:
-						EditProduct(order_list, order_index, source_list, in);
+						EditProduct(order_list, order_index, in);
 						break;
 					default:
 						System.out.printf("[!] - Invalid operation, your data has not been changed\n");
@@ -281,7 +281,7 @@ public class MainSystem
 			System.out.printf("[!] - Order not found\r\n");
 	}
 	
-	public static void OrderManager(List<Order> order_list,List<Product> menu, Scanner input)
+	public static void OrderManager(List<Order> order_list, Scanner input)
 	{
 		int sent = 1, operation = 0;
 		
@@ -306,7 +306,7 @@ public class MainSystem
 			switch(operation)
 			{
 				case 1:
-					AddOrder(order_list, menu, input);
+					AddOrder(order_list, input);
 					break;
 	
 				case 2:
@@ -320,14 +320,14 @@ public class MainSystem
 					break;
 					
 				case 3:
-					if(menu.size() > 0)
-						ShowMenu(menu);
+					if(g_database_products.size() > 0)
+						ShowProductList(g_database_products);
 					else
 						System.out.printf("\n[!] - There are no products on the menu!");
 					break;
 	
 				case 4:
-					EditOrder(order_list, menu, input);
+					EditOrder(order_list, input);
 					break;
 				
 				case 5:
@@ -356,44 +356,48 @@ public class MainSystem
 			}
 		}
 	}	
-	
+
+	public static void PrintInfo()
+	{
+		System.out.printf(
+			"\n\n\t\t\t[ZeBigode's Restaurant]\n\n"               +
+			"[1] - Order Manager\n"     						  +
+			"[2] - Payment Manager\n"                             +
+			"[3] - Product Manager\n"                             +
+			"[4] - Exit\n" 										  +
+			"> "
+		);
+	}
 	
 	public static void main(String[] args) 
 	{
 		ProductDTO productDTO = new ProductDTO();
 		List<Order> main_order_list = new ArrayList<Order>();
-		List<Product> main_menu = productDTO.ListProducts();
+		g_database_products = productDTO.ListProducts();
 
 		Scanner input_scanner = new Scanner(System.in);
-		int option = 0, key = 1;
+		int option = 0;
 		
-		while(key == 1)
+		while (true)
 		{
-			System.out.printf
-			(
-				"\n\n\t\t\t[ZeBigode's Restaurant]\n\n"                                 +
-				"[1] - Order Manager\n"                                 +
-				"[2] - Payment Manager\n"                               +
-				"[3] - Product Manager\n"                                   +
-				"[+] - Enter any other number to close the program\n" +
-				"> "
-			);
+			PrintInfo();
 			
 			option = Integer.parseInt(input_scanner.nextLine());
+			if (option == 4)
+				break;
 			
-			switch(option)
+			switch (option)
 			{
 				case 1:
-					OrderManager(main_order_list, main_menu, input_scanner);	
+					OrderManager(main_order_list, input_scanner);	
 					break;
 				case 2:
 					break;
 				case 3:
 					break;
 				default:
-					System.out.printf("\n[X] - Closed program\n");
-					key = 0;
-					break;			
+					System.out.printf("\n[!] Opção Inválida\n");
+					break;
 			}
 		}
 		
