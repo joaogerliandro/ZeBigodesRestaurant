@@ -51,11 +51,11 @@ public class Client implements IID
 
 	public void ShowProperties()
 	{
-		System.out.printf("\nClient ID: "
+		System.out.printf("\n\t- ID: "
 		+ client_id
-		+ "\nClient Name: "
+		+ "\n\t- Name: "
 		+ name
-		+ "\nTable Number: "
+		+ "\n\t- Table Number: "
 		+ table_number);
 	}
 }

@@ -27,7 +27,7 @@ public class OrderSystem
         for(int count = 0; count < menu.size(); count++)
 		{
 			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
-			menu.get(count).ShowProperties();
+			menu.get(count).ShowProperties(false);
 		}
 	}
     

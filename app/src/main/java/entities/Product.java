@@ -78,15 +78,27 @@ public class Product implements IID
 		product_id = p_product_id;
 	}
 
-	public void ShowProperties()
+	public void ShowProperties(boolean show_amount)
 	{
-		System.out.printf("\nProduct ID: "
-		+ product_id
-		+ "\nProduct Name: "
-		+ name
-		+ "\nAmount: "
-		+ amount
-		+ "Price: "
-		+ (amount * price));
+		if(show_amount == true) 
+		{
+			System.out.printf("\n\t\t- ID: "
+					+ product_id
+					+ "\n\t\t- Name: "
+					+ name
+					+ "\n\t\t- Amount: "
+					+ amount
+					+ "\n\t\t- Total Price: "
+					+ (amount * price));
+		}
+		else
+		{
+			System.out.printf("\n\t- ID: "
+					+ product_id
+					+ "\n\t- Name: "
+					+ name
+					+ "\n\t- Price: "
+					+ (amount * price));
+		}
 	}	
 }

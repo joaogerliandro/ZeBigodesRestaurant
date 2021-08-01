@@ -72,12 +72,12 @@ public class Order implements IID
 
 		for (Product p : products)
 		{
-			System.out.printf("\n\t[PRODUCT #%d]", cnt++);
-			p.ShowProperties();
+			System.out.printf("\n\t\t[PRODUCT #%d]", cnt++);
+			p.ShowProperties(true);
 		}
 	}
 	
-	public void ShowProductList(List<Product> source_list)
+	/*public void ShowProductList(List<Product> source_list)
 	{
 		int cnt = 0;
 
@@ -86,15 +86,15 @@ public class Order implements IID
 			System.out.printf("\n\t[PRODUCT #%d]", cnt++);
 			p.ShowProperties();
 		}
-	}
+	}*/
 
 	public void ShowProperties()
 	{
-		System.out.printf("\nOrder ID: "
+		System.out.printf("\n\t- ID: "
 						+ order_id
-						+ "\nOrder Time: "
+						+ "\n\t- Time: "
 						+ order_time
-						+ "\nOrder Status: "
+						+ "\n\t- Order Status: "
 						+ status.name());
 
 		System.out.printf("\n\t[CLIENT]");

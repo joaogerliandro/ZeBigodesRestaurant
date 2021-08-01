@@ -24,10 +24,10 @@ public class MainSystem
 
 		int new_product_id = 0, product_index = 0;
 		
-		System.out.printf("Dgite o nome do cliente: ");
+		System.out.printf("\nDigite o nome do cliente: ");
 		name_client = in.nextLine();
 
-		System.out.printf("Digite o numero da mesa: ");
+		System.out.printf("\nDigite o numero da mesa: ");
 		table_number = Integer.parseInt(in.nextLine());
 
 		System.out.println("");
@@ -40,7 +40,7 @@ public class MainSystem
 		{
 			ShowMenu(source_list);
 
-			System.out.print("\nEnter ID of the product: ");
+			System.out.print("\n\nEnter ID of the product: ");
 			new_product_id = Integer.parseInt(in.nextLine());
 
 			product_index = GetProductIndex(list_products, new_product_id);
@@ -67,7 +67,7 @@ public class MainSystem
 						list_products.add(new_product);
 					}
 					else
-						System.out.println("\n[Error] This ID does not match any of the products in the menu.");
+						System.out.println("\n[!] - This ID does not match any of the products in the menu.");
 			}
 			else
 			{
@@ -104,11 +104,11 @@ public class MainSystem
     }
 	public static void ShowMenu(List<Product> menu)
 	{
-        System.out.printf("\n\t\t[MENU]");
+        System.out.printf("\n\t\t\t[MENU]\n");
         for(int count = 0; count < menu.size(); count++)
 		{
 			System.out.printf("\n\t[PRODUCT #%d]", (count + 1));
-			menu.get(count).ShowProperties();
+			menu.get(count).ShowProperties(false);
 		}
 	}
 	public static boolean RemoveOrder(List<Order> order_list, int order_id)
@@ -163,7 +163,7 @@ public class MainSystem
 			int indx_new_product = GetProductIndex(source_list, id_product);
 			
 			if(GetProductIndex(order_List.get(order_indx).GetProducts(), id_product) != -1)
-				System.out.printf("O produto já existe na sua lista de produtos\n");
+				System.out.printf("[!] - O produto já existe na sua lista de produtos\n");
 			else
 				if(indx_new_product >= 0 && indx_new_product < source_list.size())
 				{
@@ -179,7 +179,7 @@ public class MainSystem
 
 					order_List.get(order_indx).GetProducts().add(new_Product);
 				}else
-					System.out.printf("\nProduto não encontra no menu\n");
+					System.out.printf("\n[!] - Produto não se encontra no menu\n");
 		}
 		else if(choice == 2)
 		{
@@ -197,11 +197,11 @@ public class MainSystem
 
 				order_List.get(order_indx).GetProducts().get(indx_product).SetAmount(amount);
 			}else
-				System.out.printf("Produto não encontra na lista de produtos\n");
+				System.out.printf("[!] - Produto não encontra na lista de produtos\n");
 		}
 		else
 		{
-			System.out.printf("Operação invalida, seus produto não foram alterados\n");
+			System.out.printf("[!] - Operação invalida, seus produto não foram alterados\n");
 		}
 	}
 	public static void EditOrder(List<Order> order_list, List<Product> source_list, Scanner in)
@@ -220,7 +220,7 @@ public class MainSystem
 			{
 				System.out.printf
 				(
-					"\t\t[EDIT ORDER]\n"          +
+					"\n\t\t[EDIT ORDER]\n"          +
 					"[1] - Edit customer name\n"  +
 					"[2] - Edit table number\n"   +
 					"[3] - Edit order status\n"   +
@@ -231,23 +231,23 @@ public class MainSystem
 				switch (Integer.parseInt(in.nextLine())) 
 				{
 					case 1:
-						System.out.printf("Digite o novo nome do cliente: ");
+						System.out.printf("\nDigite o novo nome do cliente: ");
 						name_client = in.nextLine();
 
 						order_list.get(order_index).GetClient().SetName(name_client);
-						System.out.printf("Nome atualizado\n");
+						System.out.printf("\n[*] - Nome atualizado\n");
 						break;
 					case 2:
-						System.out.printf("Digite o novo numero da mesa: ");
+						System.out.printf("\nDigite o novo numero da mesa: ");
 						table_number = Integer.parseInt(in.nextLine());
 
 						order_list.get(order_index).GetClient().SetTableNumber(table_number);
-						System.out.printf("Numero da mesa atualizado\n");
+						System.out.printf("\n[*] - Numero da mesa atualizado\n");
 						break;
 					case 3:
 						System.out.printf("\nDigite o numero que representa o novo status:\n"     +
 										  "[1] - PENDING_ORDER\n"    + "[2] - IN_PREPARATION\n" +
-										  "[3] - AWAITING_PAYMENT\n" + "[4] - COMPLETE\n");
+										  "[3] - AWAITING_PAYMENT\n");
 						
 						new_status = Integer.parseInt(in.nextLine());
 
@@ -255,7 +255,7 @@ public class MainSystem
 						{
 							case 1:
 								order_list.get(order_index).SetStatus(OrderStatus.PENDING_ORDER);
-								System.out.printf("Status do pedido foi atualizado\n");
+								System.out.printf("[*] - Status do pedido foi atualizado\n");
 								break;
 							case 2:
 								order_list.get(order_index).SetStatus(OrderStatus.IN_PREPARATION);
@@ -263,11 +263,8 @@ public class MainSystem
 							case 3:
 								order_list.get(order_index).SetStatus(OrderStatus.AWAITING_PAYMENT);
 								break;
-							case 4:
-								order_list.get(order_index).SetStatus(OrderStatus.COMPLETE);
-								break;
 							default:
-								System.out.printf("Comando invalido, status permanece inalterado\n");
+								System.out.printf("[!] - Comando invalido, status permanece inalterado\n");
 								break;
 						}
 						break;
@@ -275,21 +272,19 @@ public class MainSystem
 						EditProduct(order_list, order_index, source_list, in);
 						break;
 					default:
-						System.out.printf("Operação invalida, seus dados não foram alterados");
+						System.out.printf("[!] - Operação invalida, seus dados não foram alterados");
 						break;
 				}
 			}else
-				System.out.printf("\nOrder can't be edited anymore !");
+				System.out.printf("\n[!] - Order can't be edited anymore !");
 		else
-			System.out.printf("Order not found\r\n");
+			System.out.printf("[!] - Order not found\r\n");
 	}
 	public static void main(String[] args) 
     {
 		ProductDTO productDTO = new ProductDTO();
 		List<Order> order_list = new ArrayList<Order>();
 		List<Product> menu = productDTO.ListProducts();
-		
-		ShowMenu(menu);
 
 		Scanner input = new Scanner(System.in);
 		int operation = 0, sent = 1;
@@ -299,13 +294,13 @@ public class MainSystem
 
 		System.out.printf
 		(
-			"\n\n\t\tZeBigodes\n"                                 +
-			"[1] - Add Request\n"                                 +
-			"[2] - List requests\n"                               +
-			"[3] - Edit request\n"                                +
-			"[4] - Remove request\n"                              +
-			"[5] - Delete all requests\n"                         +
-			"[5] - Pay the bill\n\n"                              +
+			"\n\n\t\t\t[ZeBigode's Restaurant]\n\n"                                 +
+			"[1] - Add Orders\n"                                 +
+			"[2] - List Orders\n"                               +
+			"[3] - Show Menu\n"                                   +
+			"[4] - Edit Order\n"                                +
+			"[5] - Remove Order\n"                              +
+			"[6] - Delete All Orders\n"                         +
 			"[+] - Enter any other number to close the program\n" +
 			"> "
 		);
@@ -319,36 +314,48 @@ public class MainSystem
 				break;
 
 			case 2:
-				System.out.printf("\n\n\t\t ORDERS");
-				ShowOrderList(order_list);	
+				if(order_list.size() > 0)
+				{
+					System.out.printf("\n\n\t\t [ORDERS]");
+					ShowOrderList(order_list);	
+				}
+				else
+					System.out.printf("\n[!] - Order list is empty\n");
+				break;
+				
+			case 3:
+				if(menu.size() > 0)
+					ShowMenu(menu);
+				else
+					System.out.printf("\n[!] - There are no products on the menu!");
 				break;
 
-			case 3:
-				EditOrder(order_list, menu, input);
-			break;
-			
 			case 4:
-				System.out.println("Enter the ID of the request you want to exclude: ");
+				EditOrder(order_list, menu, input);
+				break;
+			
+			case 5:
+				System.out.println("\nEnter the ID of the order you want to exclude: ");
 				int id = Integer.parseInt(input.nextLine());
 
 				if(RemoveOrder(order_list, id))
-					System.out.printf("\nRequest deleted successfully\n");
+					System.out.printf("\n[*] - Order deleted successfully\n");
 				else
-					System.out.printf("\nOrder not found\n");
-			break;
+					System.out.printf("\n[!] - Order not found\n");
+				break;
 			
-			case 5:
+			case 6:
 				if(order_list.size() > 0)
 				{
 					order_list.clear();
-					System.out.println("All requests have been deleted successfully\n");
+					System.out.println("\n[*] - All orders have been deleted successfully\n");
 				}
 				else
-					System.out.printf("Order lists is empty\n");
-			break;
+					System.out.printf("\n[!] - Order list is empty\n");
+				break;
 			
 			default:
-				System.out.printf("Closed program\n");
+				System.out.printf("\n[X] - Closed program\n");
 				sent = 0;
 				break;
 		}   
