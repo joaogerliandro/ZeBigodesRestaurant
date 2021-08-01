@@ -26,6 +26,7 @@ hs_err_pid*
 
 # Ignore IDE settings directory
 .settings
+.vscode
 
 # Ignore Gradle project-specific cache directory
 .gradle
