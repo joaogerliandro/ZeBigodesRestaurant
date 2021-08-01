@@ -10,24 +10,28 @@ import java.util.List;
 import database.connection.ConnectionFactory;
 import entities.Product;
 
-public class ProductDTO {
-	Connection connection = ConnectionFactory.GetConnection();
-	PreparedStatement statement;
-	ResultSet resultset;
-	
-	public void InsertProduct(Product product) {
+public class ProductDTO 
+{
+	private Connection m_connection = ConnectionFactory.GetConnection();
+	private PreparedStatement m_statement;
+	private ResultSet m_resultset;
+
+	public void InsertProduct(Product product) 
+	{
 		String sql = "INSERT INTO product(name, price) VALUES (?, ?)";
-		statement = null;
+		m_statement = null;
 		
-		try {
-			statement = (PreparedStatement) connection.prepareStatement(sql);
+		try 
+		{
+			m_statement = (PreparedStatement) m_connection.prepareStatement(sql);
 			
-			statement.setString(1, product.GetName());
-			statement.setDouble(2, product.GetPrice());
+			m_statement.setString(1, product.GetName());
+			m_statement.setDouble(2, product.GetPrice());
+			m_statement.execute();
 			
-			statement.execute();
-			
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 	}
@@ -35,31 +39,37 @@ public class ProductDTO {
 	public void DeleteProduct(int product_id)
 	{
 		String sql = "DELETE FROM product WHERE id = ?";
-		statement = null;
+		m_statement = null;
 		
-		try {
-			statement = (PreparedStatement) connection.prepareStatement(sql);
-			statement.setInt(1, product_id);
-			
-			statement.execute();
-		}catch (SQLException e) {
+		try 
+		{
+			m_statement = (PreparedStatement) m_connection.prepareStatement(sql);
+			m_statement.setInt(1, product_id);
+			m_statement.execute();
+		}
+		catch (SQLException e)
+		{
 			e.printStackTrace();
 		}	
 	}
-	
-	public void EditProduct(Product product, int product_id)
+
+	public void EditProduct(Product product)
 	{
-		String sql = "UPDATE produto SET name = ?, price = ? WHERE id = ?";
-		statement = null;
-		try {
-			statement = (PreparedStatement) connection.prepareStatement(sql);
+		String sql = "UPDATE product SET name = ?, price = ? WHERE id = ?";
+		m_statement = null;
 		
-			statement.setString(1, product.GetName());
-			statement.setDouble(2, product.GetPrice());
-			statement.setInt(3, product_id);
-			
-			statement.execute();
-		}catch (SQLException e) {
+		try 
+		{
+			m_statement = (PreparedStatement) m_connection.prepareStatement(sql);
+		
+			m_statement.setString(1, product.GetName());
+			m_statement.setDouble(2, product.GetPrice());
+			m_statement.setInt(3, product.GetID());
+		
+			m_statement.execute();
+		}
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}	
 	}
@@ -69,25 +79,40 @@ public class ProductDTO {
 		//Menu have the products of database
 		List<Product> database_products = ListProducts();
 		
-		for(int i = 0; i < database_products.size(); i++)
+		for (int i = 0; i < database_products.size(); i++)
 		{
-			if(product_id == database_products.get(i).GetID())
+			if (product_id == database_products.get(i).GetID())
 			{
 				System.out.printf("\n ID: "
-				+ database_products.get(i).GetID()
-				+ "\t\t Nome: "
-				+ database_products.get(i).GetName()
-				+ "\t\t Preço: "
-				+ database_products.get(i).GetPrice());
+								+ database_products.get(i).GetID()
+								+ "\t\t Nome: "
+								+ database_products.get(i).GetName()
+								+ "\t\t PreÃ§o: "
+								+ database_products.get(i).GetPrice());
 			}
 		}
+	}
+	public Product GetProduct(int product_id)
+	{
+		List<Product> database_products = ListProducts();
+		
+		Product product_found = null;
+		
+		for (int i = 0; i < database_products.size(); i++)
+			if (product_id == database_products.get(i).GetID())
+				product_found = database_products.get(i);
+			
+		if(product_found != null)
+			return product_found;
+		else
+			throw new RuntimeException();		
 	}
 	
 	public void ClearProductDatabase()
 	{
 		List<Product> database_products = ListProducts();
 		
-		for(int i = 0; i < database_products.size(); i++)
+		for (int i = 0; i < database_products.size(); i++)
 		{
 			DeleteProduct(database_products.get(i).GetID());
 		}
@@ -95,54 +120,56 @@ public class ProductDTO {
 	
 	public List<Product> ListProducts()
 	{
-		String sql = "SELECT * FROM produto";
+		String sql = "SELECT * FROM product";
 		
 		List<Product> database_products = new ArrayList<Product>();
-		statement = null;
-		resultset = null;
+		m_statement = null;
+		m_resultset = null;
 	
-		try {
-			statement = (PreparedStatement) connection.prepareStatement(sql);
+		try 
+		{
+			m_statement = (PreparedStatement) m_connection.prepareStatement(sql);
+			m_resultset = m_statement.executeQuery();
 			
-			resultset = statement.executeQuery();
-			
-			int load_id;
+			int    load_id;
 			String load_name;
 			double load_price;
 			
-			while(resultset.next()) 
+			while (m_resultset.next()) 
 			{	
-				load_id = resultset.getInt("id");
-				load_name = resultset.getString("name");
-				load_price = resultset.getDouble("price");
+				load_id    = m_resultset.getInt("id");
+				load_name  = m_resultset.getString("name");
+				load_price = m_resultset.getDouble("price");
 				
 				Product load_product = new Product(load_id, load_name, load_price);
-				
 				database_products.add(load_product); 
 			}
 			
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) 
+		{
 			e.printStackTrace();
 		}
 		
 		return database_products;
 	}
 	
-	public void CloseConnection() {
-		try {
-			if(connection != null)
-			{
-				connection.close();
-			}
-			if(statement != null)
-			{
-				statement.close();
-			}
-			if(resultset != null)
-			{
-				resultset.close();
-			}
-		}catch (SQLException e){
+	public void CloseConnection()
+	{
+		try 
+		{
+			if (m_connection != null)
+				m_connection.close();
+
+			if (m_statement != null)
+				m_statement.close();
+
+			if (m_resultset != null)
+				m_resultset.close();
+
+		}
+		catch (SQLException e)
+		{
 			e.printStackTrace();
 		}
 	}

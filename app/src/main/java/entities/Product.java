@@ -9,22 +9,26 @@ public class Product implements IID
 	private double price;
 	private int amount;
 	
+	public Product(String p_name, double p_price)
+	{
+		name  = p_name;
+		price = p_price;
+	}
+	
 	public Product(int p_product_id, String p_name, double p_price) 
 	{
-		super();
 		product_id = p_product_id;
-		name = p_name;
-		price = p_price;
-		amount = 1;
+		name       = p_name;
+		price      = p_price;
+		amount     = 1;
 	}
 	
 	public Product(int p_product_id, String p_name, double p_price, int p_amount) 
 	{
-		super();
 		product_id = p_product_id;
-		name = p_name;
-		price = p_price;
-		amount = p_amount;
+		name       = p_name;
+		price      = p_price;
+		amount     = p_amount;
 	}
 
 	public String GetName() 
@@ -57,6 +61,11 @@ public class Product implements IID
 		amount = p_amount;
 	}
 
+	public void AddAmount(int increase)
+	{
+		amount += increase;
+	}
+
 	@Override
 	public int GetID()
 	{
@@ -69,16 +78,27 @@ public class Product implements IID
 		product_id = p_product_id;
 	}
 
-	public void ShowProperties()
+	public void ShowProperties(boolean show_amount)
 	{
-		System.out.printf("\nProduct ID: "
-		+ product_id
-		+ "\nProduct Name: "
-		+ name
-		+ "\nAmount: "
-		+ amount
-		+ "Price: "
-		+ (amount * price));
-	}
-	
+		if(show_amount == true) 
+		{
+			System.out.printf("\n\t\t- ID: "
+					+ product_id
+					+ "\n\t\t- Name: "
+					+ name
+					+ "\n\t\t- Amount: "
+					+ amount
+					+ "\n\t\t- Total Price: "
+					+ (amount * price));
+		}
+		else
+		{
+			System.out.printf("\n\t- ID: "
+					+ product_id
+					+ "\n\t- Name: "
+					+ name
+					+ "\n\t- Price: "
+					+ (amount * price));
+		}
+	}	
 }

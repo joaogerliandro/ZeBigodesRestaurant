@@ -5,6 +5,7 @@
  * For more details take a look at the 'Building Java & JVM projects' chapter in the Gradle
  * User Manual available at https://docs.gradle.org/7.1.1/userguide/building_java_projects.html
  */
+apply plugin: 'java-library'
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
@@ -14,6 +15,11 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+	jcenter()
+}
+
+configurations {
+    driver
 }
 
 dependencies {
@@ -22,6 +28,10 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.1-jre'
+	
+	// This dependency is used by mysql java connector
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
+    runtime "mysql:mysql-connector-java:8.0.26"
 }
 
 application {
