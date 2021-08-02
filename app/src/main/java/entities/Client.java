@@ -1,6 +1,7 @@
 package entities;
 
 import interfaces.IID;
+import exceptions.*;
 
 public class Client implements IID
 {
@@ -31,8 +32,10 @@ public class Client implements IID
 		return table_number;
 	}
 
-	public void SetTableNumber(int p_table_number) /// ????
+	public void SetTableNumber(int p_table_number) throws InvalidTableNumber
 	{
+		if (p_table_number <= 0)
+			throw new InvalidTableNumber("table number must be positive");
 		table_number = p_table_number;
 	}
 	

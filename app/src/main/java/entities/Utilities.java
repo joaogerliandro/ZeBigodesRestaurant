@@ -48,4 +48,20 @@ public class Utilities
 
         return -1;
     } 
+
+	public static int GetProductIndex(List<Product> product_list, 
+									  int product_id)
+    {   
+		int count = 0;
+
+		for (Product p : product_list)
+		{
+			if (product_id == p.GetID())
+                return count;
+			++count;
+		}
+
+        return -1;
+    }
+
 }

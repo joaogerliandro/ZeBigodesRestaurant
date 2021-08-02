@@ -60,13 +60,15 @@ public class Product implements IID
 	public void SetAmount(int p_amount) throws InvalidProductAmount
 	{
 		if (p_amount <= 0)
-			throw new InvalidProductAmount("The amount of the product can not be less than zero.");
+			throw new InvalidProductAmount("[!] The amount of the product can not be less than zero.");
 
 		amount = p_amount;
 	}
 
-	public void AddAmount(int increase)
+	public void AddAmount(int increase) throws InvalidProductAmount
 	{
+		if (increase <= 0)
+			throw new InvalidProductAmount("[!] product amount cannot be negative or zero");
 		amount += increase;
 	}
 
